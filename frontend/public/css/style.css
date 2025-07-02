@@ -121,6 +121,21 @@ header {
     background: #fff;
 }
 
+
+main {
+  max-width: 1200px;
+  margin: 0 auto 2rem auto;
+  padding: 0 2vw;
+}
+
+h2 {
+  margin-top: 0;
+  font-size: 2rem;
+  color: var(--primary);
+}
+
+
+
 footer {
     background: var(--primary);
     color: #fff;
