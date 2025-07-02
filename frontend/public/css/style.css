@@ -47,3 +47,15 @@ header {
 .nav-links a:hover {
   color: var(--accent);
 }
+
+footer {
+  background: var(--primary);
+  color: #fff;
+  padding: 1.5rem 0 1rem 0;
+  text-align: center;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
