@@ -5,24 +5,37 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Product Details - Reown</title>
   <link rel="stylesheet" href="../public/css/style.css">
+  <style>
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .nav-links {
+    display: flex;
+    gap: 1.5rem;
+    margin-left: auto;
+  }
+  </style>
 </head>
 <body>
   <header>
     <nav class="navbar">
       <div class="logo">Reown</div>
-      <ul class="nav-links">
+       <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
-        <li><a href="login.html">Login</a></li>
-        <li><a href="signup.html">Sign Up</a></li>
         <li><a href="cart.html">Cart</a></li>
         <li><a href="dashboard.html">Dashboard</a></li>
         <li><a href="admin.html">Admin</a></li>
         <li><a href="contact.html">Contact Us</a></li>
+        <li><a href="login.html">Login</a></li>
+        <li><a href="signup.html">Sign Up</a></li>
       </ul>
     </nav>
   </header>
 
   <main>
+    <button class="back-btn" onclick="history.back()" style="margin: 1.5rem 0 1rem 2rem; padding: 0.6em 1.2em; border-radius: 24px; border: none; background: #047e84; color: #fff; font-size: 1.1rem; font-weight: bold; cursor: pointer; display: flex; align-items: center;"><span style="font-size:1.3em;margin-right:0.5em;">&#8592;</span>Back</button>
     <section class="product-details">
       <div class="product-img-col">
         <img src="../public/images/denim-jacket.jpg" alt="Product Image" class="product-img" id="productImg">
@@ -35,13 +48,14 @@
         </div>
         <p id="productDesc">Classic blue denim, lightly worn. Size: M. Free shipping available.</p>
         <button class="buy-btn" id="buyBtn">Buy Now</button>
+        <button class="add-cart-btn" id="addCartBtn">Add to Cart</button>
       </div>
     </section>
   </main>
 
   <footer>
     <div class="footer-content">
-      <p>&copy; 2024 Reown. All rights reserved.</p>
+      <p>&copy; 2025 Reown. All rights reserved.</p>
       <div class="social-links">
         <a href="#">Instagram</a> |
         <a href="#">Facebook</a> |
@@ -51,5 +65,99 @@
   </footer>
 
   <script src="../public/js/product.js"></script>
+  <script>
+  document.getElementById('addCartBtn').addEventListener('click', function() {
+    alert('Added to cart! (placeholder)');
+  });
+  </script>
+
+  <script>
+  // Product data (should match index.html)
+  const products = [
+    {
+      id: 1,
+      name: 'Maxi Skirt',
+      price: 899,
+      original: 1799,
+      image: '../public/images/maxi-skirt.jpg',
+      desc: 'Elegant maxi skirt, perfect for all occasions. Size: M. Free shipping available.'
+    },
+    {
+      id: 2,
+      name: "Men's Fashion",
+      price: 1399,
+      original: 2499,
+      image: '../public/images/mens-fashion.jpeg',
+      desc: 'Trendy men\'s fashion for every season. Size: L. Free shipping available.'
+    },
+    {
+      id: 3,
+      name: 'Silt Dress',
+      price: 1099,
+      original: 2099,
+      image: '../public/images/silt-dress.jpg',
+      desc: 'Chic silt dress, comfortable and stylish. Size: S. Free shipping available.'
+    },
+    {
+      id: 4,
+      name: "Men's Formal",
+      price: 1599,
+      original: 2999,
+      image: '../public/images/mens-formal.jpg',
+      desc: 'Classic men\'s formal wear. Size: XL. Free shipping available.'
+    },
+    {
+      id: 5,
+      name: "Women's Formal",
+      price: 1299,
+      original: 2599,
+      image: '../public/images/womens-formal.jpg',
+      desc: 'Elegant women\'s formal dress. Size: M. Free shipping available.'
+    },
+    {
+      id: 6,
+      name: 'Bridal Attire',
+      price: 2499,
+      original: 4999,
+      image: '../public/images/bridal-attire.jpeg',
+      desc: 'Beautiful bridal attire for your special day. Size: Custom. Free shipping available.'
+    },
+    {
+      id: 7,
+      name: 'Coat',
+      price: 1199,
+      original: 2199,
+      image: '../public/images/coat.jpg',
+      desc: 'Warm and stylish coat for winter. Size: L. Free shipping available.'
+    },
+    {
+      id: 8,
+      name: 'Heels',
+      price: 799,
+      original: 1599,
+      image: '../public/images/heels.jpg',
+      desc: 'Fashionable heels for every occasion. Size: 7. Free shipping available.'
+    }
+  ];
+
+  // Get product id from URL
+  function getProductId() {
+    const params = new URLSearchParams(window.location.search);
+    return parseInt(params.get('id'));
+  }
+
+  function renderProduct() {
+    const id = getProductId();
+    const product = products.find(p => p.id === id) || products[0];
+    document.getElementById('productImg').src = product.image;
+    document.getElementById('productImg').alt = product.name;
+    document.getElementById('productName').textContent = product.name;
+    document.getElementById('productPrice').textContent = `₹${product.price}`;
+    document.querySelector('.original-price').textContent = `₹${product.original}`;
+    document.getElementById('productDesc').textContent = product.desc;
+  }
+
+  document.addEventListener('DOMContentLoaded', renderProduct);
+  </script>
 </body>
 </html>
