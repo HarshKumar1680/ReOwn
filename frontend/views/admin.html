@@ -3,23 +3,59 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - Reown</title>
+  <title>Admin Panel - Reown</title>
   <link rel="stylesheet" href="../public/css/style.css">
 </head>
 <body>
   <header>
-    <h1>Reown</h1>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="login.html">Login</a>
-      <a href="signup.html">Sign Up</a>
-      <a href="cart.html">Cart</a>
-      <a href="dashboard.html">Dashboard</a>
-      <a href="admin.html">Admin</a>
+    <nav class="navbar">
+      <div class="logo">Reown</div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="login.html">Login</a></li>
+        <li><a href="signup.html">Sign Up</a></li>
+        <li><a href="cart.html">Cart</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="admin.html">Admin</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+      </ul>
     </nav>
   </header>
+
   <main>
-    <h1>Admin Panel</h1>
+    <section class="admin-section">
+      <aside class="admin-nav">
+        <button class="admin-tab active" data-tab="users">Users</button>
+        <button class="admin-tab" data-tab="products">Products</button>
+      </aside>
+      <div class="admin-content">
+        <div id="adminUsers" class="admin-panel">
+          <h2>All Users</h2>
+          <div class="admin-table">
+     
+          </div>
+        </div>
+        <div id="adminProducts" class="admin-panel" style="display:none;">
+          <h2>All Products</h2>
+          <div class="admin-table">
+      
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
+
+  <footer>
+    <div class="footer-content">
+      <p>&copy; 2024 Reown. All rights reserved.</p>
+      <div class="social-links">
+        <a href="#">Instagram</a> |
+        <a href="#">Facebook</a> |
+        <a href="#">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../public/js/admin.js"></script>
 </body>
-</html>
+</html> 
