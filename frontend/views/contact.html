@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us - Reown</title>
+  <link rel="stylesheet" href="../public/css/style.css">
+  <style>
+    .contact-section { max-width: 520px; margin: 60px auto 40px auto; background: #fff; border-radius: 14px; box-shadow: 0 2px 16px rgba(0,0,0,0.07); padding: 36px 28px; }
+    .contact-section h1 { font-size: 2rem; margin-bottom: 18px; color: var(--primary); }
+    .contact-section form { display: flex; flex-direction: column; gap: 16px; }
+    .contact-section input, .contact-section textarea { padding: 12px; border-radius: 8px; border: 1px solid #ccc; font-size: 1rem; }
+    .contact-section textarea { min-height: 100px; resize: vertical; }
+    .contact-section button { background: var(--primary); color: #fff; border: none; border-radius: 30px; padding: 12px 0; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-top: 8px; transition: background 0.2s; }
+    .contact-section button:hover { background: var(--accent); color: #222; }
+    .contact-info { margin-top: 28px; color: #444; font-size: 1rem; }
+    .thank-you-msg { display: none; color: var(--primary); font-weight: bold; margin-top: 18px; text-align: center; }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="logo">Reown</div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="login.html">Login</a></li>
+        <li><a href="signup.html">Sign Up</a></li>
+        <li><a href="cart.html">Cart</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="admin.html">Admin</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <section class="contact-section">
+      <h1>Contact Us</h1>
+      <form id="contactForm">
+        <input type="text" name="name" placeholder="Your Name" required>
+        <input type="email" name="email" placeholder="Your Email" required>
+        <textarea name="message" placeholder="Your Message" required></textarea>
+        <button type="submit">Send Message</button>
+      </form>
+      <div class="thank-you-msg" id="thankYouMsg">Thank you for reaching out! We'll get back to you soon.</div>
+      <div class="contact-info">
+        <div><b>Email:</b> support@reown.com</div>
+        <div><b>Phone:</b> +91 98765 43210</div>
+        <div><b>Address:</b> 123, Thrift Lane, Mumbai, India</div>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="footer-content">
+      <div class="social-links">
+        <a href="#">Instagram</a> |
+        <a href="#">Facebook</a> |
+        <a href="contact.html">Contact Us</a>
+      </div>
+      <p>&copy; 2024 Reown. All rights reserved.</p>
+    </div>
+  </footer>
+  <script>
+    document.getElementById('contactForm').onsubmit = function(e) {
+      e.preventDefault();
+      document.getElementById('thankYouMsg').style.display = 'block';
+      this.reset();
+    };
+  </script>
+</body>
+</html> 

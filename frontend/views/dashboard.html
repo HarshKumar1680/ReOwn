@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Reown</title>
+  <link rel="stylesheet" href="../public/css/style.css">
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="logo">Reown</div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="login.html">Login</a></li>
+        <li><a href="signup.html">Sign Up</a></li>
+        <li><a href="cart.html">Cart</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="admin.html">Admin</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="dashboard-section">
+      <aside class="dashboard-nav">
+        <button class="dashboard-tab active" data-tab="listings">My Listings</button>
+        <button class="dashboard-tab" data-tab="orders">My Orders</button>
+        <button class="dashboard-tab" data-tab="profile">Profile</button>
+      </aside>
+      <div class="dashboard-content">
+        <div id="dashboardWelcome" class="dashboard-welcome">
+          <h1>Welcome, <span id="userName">User</span>!</h1>
+          <p>Manage your listings, orders, and profile here.</p>
+        </div>
+        <div id="dashboardListings" class="dashboard-panel">
+          <h2>My Listings</h2>
+          <div class="dashboard-table">
+            <!-- Listings will be rendered here by JS -->
+          </div>
+        </div>
+        <div id="dashboardOrders" class="dashboard-panel" style="display:none;">
+          <h2>My Orders</h2>
+          <div class="dashboard-table">
+            <!-- Orders will be rendered here by JS -->
+          </div>
+        </div>
+        <div id="dashboardProfile" class="dashboard-panel" style="display:none;">
+          <h2>Profile</h2>
+          <form id="profileForm" class="profile-form">
+            <label for="profileName">Name</label>
+            <input type="text" id="profileName" value="User" required>
+            <label for="profileEmail">Email</label>
+            <input type="email" id="profileEmail" value="user@example.com" required>
+            <button type="submit" class="cta-btn">Update Profile</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <p>&copy; 2024 Reown. All rights reserved.</p>
+      <div class="social-links">
+        <a href="#">Instagram</a> |
+        <a href="#">Facebook</a> |
+        <a href="#">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../public/js/dashboard.js"></script>
+</body>
+</html> 
