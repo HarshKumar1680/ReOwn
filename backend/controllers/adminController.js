@@ -1,6 +1,6 @@
 const User = require('../models/User');
 
-// @desc    Get all users (Admin only)
+// @desc    Get all users 
 // @route   GET /api/admin/users
 // @access  Private/Admin
 const getAllUsers = async (req, res) => {
@@ -13,7 +13,7 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-// @desc    Get user by ID (Admin only)
+// @desc    Get user by ID 
 // @route   GET /api/admin/users/:id
 // @access  Private/Admin
 const getUserById = async (req, res) => {
@@ -31,7 +31,7 @@ const getUserById = async (req, res) => {
   }
 };
 
-// @desc    Create user (Admin only)
+// @desc    Create user 
 // @route   POST /api/admin/users
 // @access  Private/Admin
 const createUser = async (req, res) => {
@@ -70,7 +70,7 @@ const createUser = async (req, res) => {
   }
 };
 
-// @desc    Update user (Admin only)
+// @desc    Update user
 // @route   PUT /api/admin/users/:id
 // @access  Private/Admin
 const updateUser = async (req, res) => {
@@ -107,7 +107,7 @@ const updateUser = async (req, res) => {
   }
 };
 
-// @desc    Delete user (Admin only)
+// @desc    Delete user 
 // @route   DELETE /api/admin/users/:id
 // @access  Private/Admin
 const deleteUser = async (req, res) => {
@@ -131,7 +131,7 @@ const deleteUser = async (req, res) => {
   }
 };
 
-// @desc    Toggle user active status (Admin only)
+// @desc    Toggle user active status 
 // @route   PATCH /api/admin/users/:id/toggle-status
 // @access  Private/Admin
 const toggleUserStatus = async (req, res) => {
