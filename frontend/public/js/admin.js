@@ -54,3 +54,11 @@ function renderProducts() {
 
 renderUsers();
 renderProducts(); 
+// Optionally, add logout
+const logoutBtn = document.getElementById('logoutBtn');
+if (logoutBtn) {
+  logoutBtn.addEventListener('click', function() {
+    localStorage.removeItem('token');
+    window.location.href = '/frontend/views/login.html';
+  });
+} 
