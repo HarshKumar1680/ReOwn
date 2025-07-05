@@ -1,4 +1,4 @@
-// Status Codes
+// HTTP Status Codes
 const STATUS_CODES = {
   OK: 200,
   CREATED: 201,
