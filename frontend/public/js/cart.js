@@ -1,3 +1,4 @@
+// Placeholder cart data
 let cart = [
   {
     id: 1,

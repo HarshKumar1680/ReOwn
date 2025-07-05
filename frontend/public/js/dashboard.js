@@ -1,21 +1,61 @@
-const user = {
-  name: 'User',
-  email: 'user@example.com',
-  listings: [
-    { id: 1, name: 'Vintage Denim Jacket', price: 1299, status: 'Active' },
-    { id: 2, name: 'Leather Handbag', price: 1599, status: 'Sold' }
-  ],
-  orders: [
-    { id: 101, item: 'Floral Summer Dress', price: 899, status: 'Delivered' },
-    { id: 102, item: 'Kids Graphic Tee', price: 299, status: 'Shipped' }
-  ]
-};
+const API_BASE_URL = "http://localhost:5000/api";
+const token = localStorage.getItem('token');
 
-document.getElementById('userName').textContent = user.name;
-document.getElementById('profileName').value = user.name;
-document.getElementById('profileEmail').value = user.email;
+if (!token) {
+  alert('You must be logged in.');
+  window.location.href = '/frontend/views/login.html';
+}
 
+// Fetch user profile from backend
+async function fetchUserProfile() {
+  try {
+    const res = await fetch(`${API_BASE_URL}/auth/profile`, {
+      headers: { 'Authorization': 'Bearer ' + token }
+    });
+    if (!res.ok) throw new Error('Not authorized or error fetching profile');
+    return await res.json();
+  } catch (err) {
+    alert(err.message);
+    return null;
+  }
+}
 
+// Update user profile
+async function updateUserProfile(name, email, password) {
+  try {
+    const res = await fetch(`${API_BASE_URL}/auth/profile`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+      body: JSON.stringify({ name, email, password })
+    });
+    const data = await res.json();
+    if (res.ok) {
+      alert('Profile updated!');
+      // Optionally update token if returned
+      if (data.token) localStorage.setItem('token', data.token);
+    } else {
+      alert(data.message || 'Update failed');
+    }
+  } catch (err) {
+    alert('Error connecting to server.');
+  }
+}
+
+// Initialize dashboard with real user data
+async function initDashboard() {
+  const user = await fetchUserProfile();
+  if (!user) return;
+  document.getElementById('userName').textContent = user.name;
+  document.getElementById('profileName').value = user.name;
+  document.getElementById('profileEmail').value = user.email;
+}
+
+initDashboard();
+
+// Tab switching
 const tabs = document.querySelectorAll('.dashboard-tab');
 const panels = {
   listings: document.getElementById('dashboardListings'),
@@ -33,7 +73,7 @@ tabs.forEach(tab => {
   });
 });
 
-
+// Render listings
 function renderListings() {
   const table = panels.listings.querySelector('.dashboard-table');
   if (user.listings.length === 0) {
@@ -45,7 +85,7 @@ function renderListings() {
   </tbody></table>`;
 }
 
-
+// Render orders
 function renderOrders() {
   const table = panels.orders.querySelector('.dashboard-table');
   if (user.orders.length === 0) {
@@ -60,16 +100,79 @@ function renderOrders() {
 renderListings();
 renderOrders();
 
-
+// Profile form
 const profileForm = document.getElementById('profileForm');
 profileForm.addEventListener('submit', function(e) {
   e.preventDefault();
   const name = document.getElementById('profileName').value.trim();
   const email = document.getElementById('profileEmail').value.trim();
+  const password = document.getElementById('profilePassword') ? document.getElementById('profilePassword').value.trim() : undefined;
   if (!name || !email) {
     alert('Please fill in all fields.');
     return;
   }
+  updateUserProfile(name, email, password);
+});
 
-  alert('Profile updated (placeholder)!');
+// Optionally, add logout
+const logoutBtn = document.getElementById('logoutBtn');
+if (logoutBtn) {
+  logoutBtn.addEventListener('click', function() {
+    localStorage.removeItem('token');
+    window.location.href = '/frontend/views/login.html';
+  });
+}
+
+// Add event listeners for delete buttons after rendering users
+adminPanels.users.addEventListener('click', async function(e) {
+  if (e.target.classList.contains('delete-btn')) {
+    const userId = e.target.getAttribute('data-id');
+    if (confirm('Are you sure you want to delete this user?')) {
+      try {
+        const res = await fetch(`${API_BASE_URL}/admin/users/${userId}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        const data = await res.json();
+        if (res.ok) {
+          alert('User deleted!');
+          renderUsers(); // Refresh the user list
+        } else {
+          alert(data.message || 'Delete failed');
+        }
+      } catch (err) {
+        alert('Error connecting to server.');
+      }
+    }
+  }
+});
+
+adminPanels.users.addEventListener('click', async function(e) {
+  if (e.target.classList.contains('edit-btn')) {
+    const userId = e.target.getAttribute('data-id');
+    const newName = prompt('Enter new name:');
+    const newEmail = prompt('Enter new email:');
+    const newRole = prompt('Enter new role (admin/user):');
+    if (newName && newEmail && newRole) {
+      try {
+        const res = await fetch(`${API_BASE_URL}/admin/users/${userId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify({ name: newName, email: newEmail, role: newRole })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          alert('User updated!');
+          renderUsers(); // Refresh the user list
+        } else {
+          alert(data.message || 'Update failed');
+        }
+      } catch (err) {
+        alert('Error connecting to server.');
+      }
+    }
+  }
 }); 

@@ -1,3 +1,4 @@
+// Featured products placeholder data
 const products = [
   {
     id: 1,
@@ -73,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderProducts(products);
 });
 
-
+// Hero Slider Logic
 (function() {
   const slides = document.querySelectorAll('.slide');
   const dots = document.querySelectorAll('.slider-dot');
@@ -108,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
   startAutoSlide();
 })();
 
-
+// Simple Banner Slider Logic
 (function() {
   const slides = document.querySelectorAll('.banner-slide');
   const dots = document.querySelectorAll('.banner-slider-dot');
