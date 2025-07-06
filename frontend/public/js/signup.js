@@ -20,9 +20,9 @@ signupForm.addEventListener('submit', async function(e) {
     if (res.ok) {
       alert('Signup successful! Please login.');
       if (data.role === 'admin') {
-        window.location.href = '/frontend/views/admin.html';
+        window.location.href = '/views/admin.html';
       } else {
-        window.location.href = '/frontend/views/index.html';
+        window.location.href = '/views/index.html';
       }
     } else {
       alert(data.message || 'Signup failed');

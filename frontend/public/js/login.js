@@ -16,13 +16,14 @@ loginForm.addEventListener('submit', async function(e) {
       body: JSON.stringify({ email, password })
     });
     const data = await res.json();
+    console.log('Login response:', data);
     if (res.ok && data.token) {
       localStorage.setItem('token', data.token);
       alert('Login successful!');
       if (data.role === 'admin') {
-        window.location.href = '/frontend/views/admin.html';
+        window.location.href = '/views/admin.html';
       } else {
-        window.location.href = '/frontend/views/index.html';
+        window.location.href = '/views/index.html';
       }
     } else {
       alert(data.message || 'Login failed');

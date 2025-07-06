@@ -57,14 +57,14 @@
     <button class="back-btn" onclick="history.back()" style="margin: 1.2rem 0 0 1.5rem; padding: 0.6em 1.2em; border-radius: 24px; border: none; background: #047e84; color: #fff; font-size: 1.1rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; position: absolute; left: 0; top: 0; z-index: 10;"><span style="font-size:1.3em;margin-right:0.5em;">&#8592;</span>Back</button>
     <nav class="navbar">
       <div class="logo">Reown</div>
-      <ul class="nav-links">
-         <li><a href="index.html">Home</a></li>
-        <li><a href="cart.html">Cart</a></li>
-        <li><a href="dashboard.html">Dashboard</a></li>
-        <li><a href="admin.html">Admin</a></li>
-        <li><a href="contact.html">Contact Us</a></li>
-        <li><a href="login.html">Login</a></li>
-        <li><a href="signup.html">Sign Up</a></li>
+            <ul class="nav-links">
+        <li><a href="/views/index.html">Home</a></li>
+        <li><a href="/views/cart.html">Cart</a></li>
+        <li><a href="/views/dashboard.html">Dashboard</a></li>
+        <li><a href="/views/admin.html">Admin</a></li>
+        <li><a href="/views/contact.html">Contact Us</a></li>
+        <li><a href="/views/login.html">Login</a></li>
+        <li><a href="/views/signup.html">Sign Up</a></li>
       </ul>
     </nav>
   </header>
@@ -79,13 +79,15 @@
         <form id="loginForm" class="auth-form">
           <input type="email" id="email" name="email" placeholder="Email*" required>
           <div style="position:relative;">
-            <input type="password" id="password" name="password" placeholder="Password*" required style="padding-right:40px;">
-            <span id="togglePassword" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);cursor:pointer;">👁️</span>
+            <input type="password" id="password" name="password" placeholder="Password*" required style="padding-right:40px; max-width:100%; box-sizing:border-box;">
+            <span id="togglePassword" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:1.2em;user-select:none;">
+              <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+            </span>
           </div>
           <button type="submit" class="cta-btn">Login</button>
         </form>
         <div class="form-footer">
-          Need an account? <a href="signup.html"><b>Sign up</b></a>
+          Need an account? <a href="/views/signup.html"><b>Sign up</b></a>
         </div>
         <div class="or-divider">OR</div>
         <button class="social-login-btn google"><span>G</span> Google</button>
@@ -102,7 +104,7 @@
       <div class="social-links">
         <a href="#">Instagram</a> |
         <a href="#">Facebook</a> |
-        <a href="contact.html">Contact Us</a>
+                  <a href="/views/contact.html">Contact Us</a>
       </div>
     </div>
   </footer>
@@ -111,10 +113,14 @@
     // Password eye toggle
     const passwordInput = document.getElementById('password');
     const togglePassword = document.getElementById('togglePassword');
+    const eyeIcon = document.getElementById('eyeIcon');
+    let shown = false;
     togglePassword.addEventListener('click', function() {
-      const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-      passwordInput.setAttribute('type', type);
-      togglePassword.textContent = type === 'password' ? '🙈' : '🙉';
+      shown = !shown;
+      passwordInput.setAttribute('type', shown ? 'text' : 'password');
+      eyeIcon.innerHTML = shown
+        ? '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a9.956 9.956 0 012.042-3.292m3.087-2.727A9.956 9.956 0 0112 5c4.478 0 8.268 2.943 9.542 7a9.956 9.956 0 01-4.421 5.568M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3l18 18"/>'
+        : '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>';
     });
   </script>
 </body>

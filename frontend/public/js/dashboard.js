@@ -3,7 +3,7 @@ const token = localStorage.getItem('token');
 
 if (!token) {
   alert('You must be logged in.');
-  window.location.href = '/frontend/views/login.html';
+  window.location.href = '/views/login.html';
 }
 
 // Fetch user profile from backend
@@ -119,7 +119,7 @@ const logoutBtn = document.getElementById('logoutBtn');
 if (logoutBtn) {
   logoutBtn.addEventListener('click', function() {
     localStorage.removeItem('token');
-    window.location.href = '/frontend/views/login.html';
+    window.location.href = '/views/login.html';
   });
 }
 
