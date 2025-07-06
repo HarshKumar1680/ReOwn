@@ -913,16 +913,15 @@ footer {
 }
 
 .admin-section {
-  max-width: 1400px;
-  margin: 40px auto 40px auto;
   display: flex;
-  flex-direction: row;
-  gap: 2.5rem;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  min-height: 70vh;
-  border-radius: 24px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.10);
-  padding: 2.5rem 2.5rem 2.5rem 2.5rem;
+  gap: 2rem;
+  background: #f7fafd;
+  border-radius: 18px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+  padding: 2.5rem 2.5rem 2.5rem 1.5rem;
+  margin: 2.5rem auto;
+  max-width: 1400px;
+  min-height: 600px;
 }
 
 .admin-nav {
@@ -958,16 +957,14 @@ footer {
 }
 
 .admin-content {
-  flex: 1 1 0;
-  min-width: 0;
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  padding: 2.5rem 2.5rem 2rem 2.5rem;
-  margin-bottom: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 2.5rem;
+  flex: 2;
+  min-width: 900px;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  padding: 2.5rem 2.5rem 2.5rem 2rem;
+  margin-left: 2rem;
+  overflow-x: auto;
 }
 
 .admin-panel {
