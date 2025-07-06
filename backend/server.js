@@ -9,6 +9,30 @@ dotenv.config();
 // Connect to database
 connectDB();
 
+// Create admin user if it doesn't exist
+const createAdminUser = async () => {
+  try {
+    const User = require('./models/User');
+    const adminExists = await User.findOne({ email: 'admin@reown.com' });
+    
+    if (!adminExists) {
+      await User.create({
+        name: 'harsh',
+        email: 'harsh@reown.com',
+        password: 'harsh123',
+        role: 'admin'
+      });
+      console.log('Admin user created successfully');
+    } else {
+      console.log('Admin user already exists');
+    }
+  } catch (error) {
+    console.error('Error creating admin user:', error);
+  }
+};
+
+createAdminUser();
+
 const app = express();
 
 // Middleware
