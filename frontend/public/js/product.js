@@ -1,99 +1,289 @@
-// Utility to get cart from localStorage
-function getCart() {
-  return JSON.parse(localStorage.getItem('cart') || '[]');
+// API Configuration
+const API_BASE_URL = 'http://localhost:5000/api';
+
+// Check if user is authenticated
+function isAuthenticated() {
+  return localStorage.getItem('token') !== null;
 }
 
-// Utility to save cart to localStorage
-function saveCart(cart) {
-  localStorage.setItem('cart', JSON.stringify(cart));
-}
-
-// Get product info from the page
-function getCurrentProduct() {
-  return {
-    id: getProductId(),
-    name: document.getElementById('productName').textContent,
-    price: parseInt(document.getElementById('productPrice').textContent.replace(/[^0-9]/g, '')),
-    image: document.getElementById('productImg').src,
-    quantity: 1
+// API helper functions using axios
+async function apiCall(endpoint, options = {}) {
+  const token = localStorage.getItem('token');
+  const defaultOptions = {
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token && { 'Authorization': `Bearer ${token}` })
+    },
+    method: 'GET',
+    data: undefined,
+    params: undefined
   };
-}
-
-// Get product id from URL
-function getProductId() {
-  const params = new URLSearchParams(window.location.search);
-  return parseInt(params.get('id'));
-}
-
-// Add to Cart handler
-function handleAddToCart() {
-  const product = getCurrentProduct();
-  let cart = getCart();
-  const existing = cart.find(item => item.id === product.id);
-  if (existing) {
-    existing.quantity += 1;
-  } else {
-    cart.push(product);
+  const config = { ...defaultOptions, ...options };
+  try {
+    const response = await axios({
+      url: `${API_BASE_URL}${endpoint}`,
+      method: config.method,
+      headers: config.headers,
+      data: config.data,
+      params: config.params
+    });
+    return response.data;
+  } catch (error) {
+    console.error('API call failed:', error);
+    throw error;
   }
-  saveCart(cart);
-  alert('Added to cart!');
 }
 
-// Buy Now handler
-function handleBuyNow() {
-  handleAddToCart();
-          window.location.href = '/views/cart.html';
+// Get product by ID
+async function getProduct(productId) {
+  try {
+    const response = await apiCall(`/products/${productId}`);
+    return response;
+  } catch (error) {
+    console.error('Error fetching product:', error);
+    throw error;
+  }
 }
 
-// Product and category data (add your real data as needed)
-const products = [
-  { id: '2', name: "Men's Fashion", image: '../public/images/mens-fashion.jpeg', desc: 'Trendy men\'s fashion.' },
-  { id: '3', name: 'Silt Dress', image: '../public/images/silt-dress.jpg', desc: 'Elegant silt dress.' },
-  { id: '4', name: "Men's Formal", image: '../public/images/mens-formal.jpg', desc: 'Formal wear for men.' },
-  { id: '5', name: "Women's Formal", image: '../public/images/womens-formal.jpg', desc: 'Formal wear for women.' },
-  { id: '6', name: 'Bridal Attire', image: '../public/images/bridal-attire.jpeg', desc: 'Beautiful bridal attire.' },
-  { id: '7', name: 'Coat', image: '../public/images/coat.jpg', desc: 'Warm and stylish coat.' },
-  { id: '8', name: 'Heels', image: '../public/images/heels.jpg', desc: 'Fashionable heels.' },
-  // Category cards
-  { id: '101', name: 'Leather Blazers', image: '../public/images/leather-blazer.jpg', desc: 'Premium leather blazers.' },
-  { id: '102', name: 'Dark Denim', image: '../public/images/dark-denim.jpg', desc: 'Classic dark denim.' },
-  { id: '103', name: 'Cozy Knits', image: '../public/images/cozy-knit.jpeg', desc: 'Soft and cozy knits.' },
-  { id: '104', name: 'Black Boots', image: '../public/images/black-boots.jpg', desc: 'Stylish black boots.' },
-];
+// Add item to cart
+async function addToCart(productId, quantity = 1) {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.post(`${API_BASE_URL}/cart/add`, { productId, quantity }, {
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token && { 'Authorization': `Bearer ${token}` })
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error adding to cart:', error);
+    throw error;
+  }
+}
 
-function getProductIdFromUrl() {
+// Buy now
+async function buyNow(productId, quantity = 1) {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.post(`${API_BASE_URL}/cart/buy`, { productId, quantity }, {
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token && { 'Authorization': `Bearer ${token}` })
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error buying now:', error);
+    throw error;
+  }
+}
+
+// Get product ID from URL
+function getProductId() {
   const params = new URLSearchParams(window.location.search);
   return params.get('id');
 }
 
-function renderProduct() {
-  const id = getProductIdFromUrl();
-  const product = products.find(p => p.id === id);
-  const container = document.getElementById('productDetails');
-  if (!product) {
-    container.innerHTML = '<h2>Product Not Found</h2>';
-    return;
-  }
-  container.innerHTML = `
-    <div class="product-details">
-      <div class="product-img-col">
-        <img src="${product.image}" alt="${product.name}" class="product-img" />
-      </div>
-      <div class="product-info-col">
-        <h1>${product.name}</h1>
-        <div class="product-pricing">Price: <span class="price">₹1999</span></div>
-        <p>${product.desc}</p>
-        <button class="buy-btn">Add to Cart</button>
-      </div>
+// Render product details
+function renderProduct(product) {
+  document.getElementById('productImg').src = product.image;
+  document.getElementById('productImg').alt = product.name;
+  document.getElementById('productName').textContent = product.name;
+  document.getElementById('productPrice').textContent = `₹${product.price}`;
+  document.querySelector('.original-price').textContent = `₹${product.originalPrice}`;
+  document.getElementById('productDesc').textContent = product.description;
+  
+  // Add product details
+  const productDetails = document.createElement('div');
+  productDetails.className = 'product-details';
+  productDetails.innerHTML = `
+    <div class="detail-item">
+      <strong>Size:</strong> ${product.size}
+    </div>
+    <div class="detail-item">
+      <strong>Condition:</strong> ${product.condition}
+    </div>
+    <div class="detail-item">
+      <strong>Brand:</strong> ${product.brand || 'N/A'}
+    </div>
+    <div class="detail-item">
+      <strong>Stock:</strong> ${product.stock} available
     </div>
   `;
+  
+  // Insert after description
+  const descElement = document.getElementById('productDesc');
+  descElement.parentNode.insertBefore(productDetails, descElement.nextSibling);
 }
 
-// Attach event listeners after DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
+// Handle add to cart
+async function handleAddToCart() {
+  const productId = getProductId();
+  if (!isAuthenticated()) {
+    alert('Please login to add items to cart');
+    window.location.href = '/views/login.html';
+    return;
+  }
+  try {
+    const response = await addToCart(productId, 1);
+    if (response.success) {
+      alert('Item added to cart successfully!');
+      updateCartCount();
+    } else {
+      alert(response.message || 'Failed to add item to cart');
+    }
+  } catch (error) {
+    alert('Error adding item to cart. Please try again.');
+  }
+}
+
+// Handle buy now
+async function handleBuyNow() {
+  const productId = getProductId();
+  if (!isAuthenticated()) {
+    alert('Please login to purchase items');
+    window.location.href = '/views/login.html';
+    return;
+  }
+  try {
+    const response = await buyNow(productId, 1);
+    if (response.success) {
+      alert('Buy now successful (cart updated)!');
+      updateCartCount();
+    } else {
+      alert(response.message || 'Failed to buy now');
+    }
+  } catch (error) {
+    alert('Error with buy now. Please try again.');
+  }
+}
+
+// Load product data
+async function loadProduct() {
+  const productId = getProductId();
+  
+  if (!productId) {
+    alert('No product ID provided');
+    window.location.href = '/views/index.html';
+    return;
+  }
+  
+  try {
+    const response = await getProduct(productId);
+    if (response.success) {
+      renderProduct(response.data);
+    } else {
+      alert('Product not found');
+      window.location.href = '/views/index.html';
+    }
+  } catch (error) {
+    console.error('Error loading product:', error);
+    alert('Error loading product. Please try again.');
+  }
+}
+
+// Initialize page
+document.addEventListener('DOMContentLoaded', () => {
+  loadProduct();
+  
+  // Add event listeners
   const addCartBtn = document.getElementById('addCartBtn');
+  if (addCartBtn) {
+    addCartBtn.addEventListener('click', handleAddToCart);
+  }
   const buyBtn = document.getElementById('buyBtn');
-  if (addCartBtn) addCartBtn.addEventListener('click', handleAddToCart);
-  if (buyBtn) buyBtn.addEventListener('click', handleBuyNow);
-  renderProduct();
-}); 
+  if (buyBtn) {
+    buyBtn.addEventListener('click', handleBuyNow);
+  }
+  updateCartCount();
+});
+
+// Update updateCartCount to not use localStorage for cart
+async function updateCartCount() {
+  const cartCountElem = document.getElementById('cartCount');
+  if (!cartCountElem) return;
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.get(`${API_BASE_URL}/cart/count`, {
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token && { 'Authorization': `Bearer ${token}` })
+      }
+    });
+    const data = response.data;
+    if (data.success) {
+      cartCountElem.textContent = data.count;
+    } else {
+      cartCountElem.textContent = '0';
+    }
+  } catch (error) {
+    cartCountElem.textContent = '0';
+  }
+}
+
+// Add CSS for product details
+const style = document.createElement('style');
+style.textContent = `
+  .product-details {
+    margin: 1rem 0;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+  }
+  
+  .detail-item {
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+  }
+  
+  .detail-item strong {
+    color: #333;
+    margin-right: 0.5rem;
+  }
+  
+  .product-pricing {
+    margin: 1rem 0;
+  }
+  
+  .original-price {
+    text-decoration: line-through;
+    color: #999;
+    margin-right: 1rem;
+  }
+  
+  .price {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #047e84;
+  }
+  
+  .buy-btn, .add-cart-btn {
+    margin: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+  
+  .buy-btn {
+    background: #047e84;
+    color: white;
+  }
+  
+  .buy-btn:hover {
+    background: #036a6f;
+  }
+  
+  .add-cart-btn {
+    background: #28a745;
+    color: white;
+  }
+  
+  .add-cart-btn:hover {
+    background: #218838;
+  }
+`;
+document.head.appendChild(style); 

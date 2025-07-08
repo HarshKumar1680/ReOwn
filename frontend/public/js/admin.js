@@ -10,11 +10,11 @@ if (!token) {
 // Verify admin role
 async function verifyAdminRole() {
   try {
-    const res = await fetch(`${API_BASE_URL}/auth/me`, {
+    const res = await axios.get(`${API_BASE_URL}/auth/me`, {
       headers: { 'Authorization': 'Bearer ' + token }
     });
-    const data = await res.json();
-    if (!res.ok || data.role !== 'admin') {
+    const data = res.data;
+    if (!data || data.role !== 'admin') {
       alert('Access denied. Admin privileges required.');
       localStorage.removeItem('token');
       window.location.href = '/views/login.html';
@@ -28,20 +28,17 @@ async function verifyAdminRole() {
 // Fetch users from backend
 async function fetchUsers() {
   try {
-    const res = await fetch(`${API_BASE_URL}/admin/users`, {
+    const res = await axios.get(`${API_BASE_URL}/admin/users`, {
       headers: { 'Authorization': 'Bearer ' + token }
     });
-    if (!res.ok) {
-      if (res.status === 401) {
-        alert('Session expired. Please login again.');
-        localStorage.removeItem('token');
-        window.location.href = '/views/login.html';
-        return [];
-      }
-      throw new Error('Error fetching users');
-    }
-    return await res.json();
+    return res.data;
   } catch (err) {
+    if (err.response && err.response.status === 401) {
+      alert('Session expired. Please login again.');
+      localStorage.removeItem('token');
+      window.location.href = '/views/login.html';
+      return [];
+    }
     console.error('Error fetching users:', err);
     alert('Error fetching users: ' + err.message);
     return [];
@@ -140,8 +137,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const userId = target.getAttribute('data-id');
       if (confirm('Are you sure you want to delete this user? This action cannot be undone.')) {
         try {
-          const res = await fetch(`${API_BASE_URL}/admin/users/${userId}`, {
-            method: 'DELETE',
+          const res = await axios.delete(`${API_BASE_URL}/admin/users/${userId}`, {
             headers: { 'Authorization': 'Bearer ' + token }
           });
           
@@ -163,7 +159,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (target.classList.contains('edit-btn')) {
       const userId = target.getAttribute('data-id');
       try {
-        const res = await fetch(`${API_BASE_URL}/admin/users/${userId}`, {
+        const res = await axios.get(`${API_BASE_URL}/admin/users/${userId}`, {
           headers: { 'Authorization': 'Bearer ' + token }
         });
         
@@ -223,13 +219,11 @@ editUserForm.addEventListener('submit', async function(e) {
   }
   
   try {
-    const res = await fetch(`${API_BASE_URL}/admin/users/${userId}`, {
-      method: 'PUT',
+    const res = await axios.put(`${API_BASE_URL}/admin/users/${userId}`, { name, email, role }, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + token
-      },
-      body: JSON.stringify({ name, email, role })
+      }
     });
     
     const data = await res.json();

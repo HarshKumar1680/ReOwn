@@ -11,13 +11,9 @@ signupForm.addEventListener('submit', async function(e) {
     return;
   }
   try {
-    const res = await fetch(`${API_BASE_URL}/auth/register`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email, password })
-    });
-    const data = await res.json();
-    if (res.ok) {
+    const res = await axios.post(`${API_BASE_URL}/auth/register`, { name, email, password });
+    const data = res.data;
+    if (res.status === 200) {
       alert('Signup successful! Please login.');
       if (data.role === 'admin') {
         window.location.href = '/views/admin.html';
@@ -28,6 +24,10 @@ signupForm.addEventListener('submit', async function(e) {
       alert(data.message || 'Signup failed');
     }
   } catch (err) {
-    alert('Error connecting to server.');
+    if (err.response && err.response.data && err.response.data.message) {
+      alert(err.response.data.message);
+    } else {
+      alert('Error connecting to server.');
+    }
   }
 }); 

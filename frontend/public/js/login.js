@@ -10,14 +10,10 @@ loginForm.addEventListener('submit', async function(e) {
     return;
   }
   try {
-    const res = await fetch(`${API_BASE_URL}/auth/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password })
-    });
-    const data = await res.json();
+    const res = await axios.post(`${API_BASE_URL}/auth/login`, { email, password });
+    const data = res.data;
     console.log('Login response:', data);
-    if (res.ok && data.token) {
+    if (data.token) {
       localStorage.setItem('token', data.token);
       alert('Login successful!');
       if (data.role === 'admin') {
@@ -29,6 +25,10 @@ loginForm.addEventListener('submit', async function(e) {
       alert(data.message || 'Login failed');
     }
   } catch (err) {
-    alert('Error connecting to server.');
+    if (err.response && err.response.data && err.response.data.message) {
+      alert(err.response.data.message);
+    } else {
+      alert('Error connecting to server.');
+    }
   }
 }); 

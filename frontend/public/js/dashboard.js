@@ -9,11 +9,10 @@ if (!token) {
 // Fetch user profile from backend
 async function fetchUserProfile() {
   try {
-    const res = await fetch(`${API_BASE_URL}/auth/profile`, {
+    const res = await axios.get(`${API_BASE_URL}/auth/profile`, {
       headers: { 'Authorization': 'Bearer ' + token }
     });
-    if (!res.ok) throw new Error('Not authorized or error fetching profile');
-    return await res.json();
+    return res.data;
   } catch (err) {
     alert(err.message);
     return null;
@@ -23,24 +22,22 @@ async function fetchUserProfile() {
 // Update user profile
 async function updateUserProfile(name, email, password) {
   try {
-    const res = await fetch(`${API_BASE_URL}/auth/profile`, {
-      method: 'PUT',
+    const res = await axios.put(`${API_BASE_URL}/auth/profile`, { name, email, password }, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + token
-      },
-      body: JSON.stringify({ name, email, password })
+      }
     });
-    const data = await res.json();
-    if (res.ok) {
-      alert('Profile updated!');
-      // Optionally update token if returned
-      if (data.token) localStorage.setItem('token', data.token);
-    } else {
-      alert(data.message || 'Update failed');
-    }
+    const data = res.data;
+    alert('Profile updated!');
+    // Optionally update token if returned
+    if (data.token) localStorage.setItem('token', data.token);
   } catch (err) {
-    alert('Error connecting to server.');
+    if (err.response && err.response.data && err.response.data.message) {
+      alert(err.response.data.message);
+    } else {
+      alert('Error connecting to server.');
+    }
   }
 }
 
@@ -129,19 +126,17 @@ adminPanels.users.addEventListener('click', async function(e) {
     const userId = e.target.getAttribute('data-id');
     if (confirm('Are you sure you want to delete this user?')) {
       try {
-        const res = await fetch(`${API_BASE_URL}/admin/users/${userId}`, {
-          method: 'DELETE',
+        const res = await axios.delete(`${API_BASE_URL}/admin/users/${userId}`, {
           headers: { 'Authorization': 'Bearer ' + token }
         });
-        const data = await res.json();
-        if (res.ok) {
-          alert('User deleted!');
-          renderUsers(); // Refresh the user list
-        } else {
-          alert(data.message || 'Delete failed');
-        }
+        alert('User deleted!');
+        renderUsers(); // Refresh the user list
       } catch (err) {
-        alert('Error connecting to server.');
+        if (err.response && err.response.data && err.response.data.message) {
+          alert(err.response.data.message);
+        } else {
+          alert('Error connecting to server.');
+        }
       }
     }
   }
@@ -155,23 +150,20 @@ adminPanels.users.addEventListener('click', async function(e) {
     const newRole = prompt('Enter new role (admin/user):');
     if (newName && newEmail && newRole) {
       try {
-        const res = await fetch(`${API_BASE_URL}/admin/users/${userId}`, {
-          method: 'PUT',
+        const res = await axios.put(`${API_BASE_URL}/admin/users/${userId}`, { name: newName, email: newEmail, role: newRole }, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + token
-          },
-          body: JSON.stringify({ name: newName, email: newEmail, role: newRole })
+          }
         });
-        const data = await res.json();
-        if (res.ok) {
-          alert('User updated!');
-          renderUsers(); // Refresh the user list
-        } else {
-          alert(data.message || 'Update failed');
-        }
+        alert('User updated!');
+        renderUsers(); // Refresh the user list
       } catch (err) {
-        alert('Error connecting to server.');
+        if (err.response && err.response.data && err.response.data.message) {
+          alert(err.response.data.message);
+        } else {
+          alert('Error connecting to server.');
+        }
       }
     }
   }
