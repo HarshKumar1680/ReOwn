@@ -7,12 +7,27 @@
   <title>Reown - Thrift Shopping</title>
   <link rel="stylesheet" href="../public/css/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 
 <body>
-  <header>
+  <header class="main-header">
+    <div class="header-left">
+      <div class="nav-arrows">
+        <button class="arrow-btn" onclick="window.history.back()" title="Back">
+          <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+            <path d="M20 8L12 16L20 24" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <button class="arrow-btn" onclick="window.history.forward()" title="Forward">
+          <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+            <path d="M12 8L20 16L12 24" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+      <div class="logo baseline-logo">Reown</div>
+    </div>
     <nav class="navbar">
-      <div class="logo">Reown</div>
       <ul class="nav-links">
         <li><a href="/views/index.html">Home</a></li>
         <li><a href="/views/cart.html">Cart</a></li>
@@ -83,49 +98,9 @@
     <span class="big">Fall freshness, always up to 60% off est. retail</span>
   </div>
 
-
   <section class="products-section" id="products-section">
-    <div class="product-cards two-rows">
-      <div class="product-card" onclick="window.location.href='product.html?id=1'">
-        <img src="../public/images/maxi-skirt.jpg" alt="Maxi Skirt">
-        <div>Maxi Skirt</div>
-        <button class="shop-btn">Shop Now</button>
-      </div>
-      <div class="product-card" onclick="window.location.href='product.html?id=2'">
-        <img src="../public/images/mens-fashion.jpeg" alt="Men's Fashion">
-        <div>Men's Fashion</div>
-        <button class="shop-btn">Shop Now</button>
-      </div>
-      <div class="product-card" onclick="window.location.href='product.html?id=3'">
-        <img src="../public/images/silt-dress.jpg" alt="Silt Dress">
-        <div>Silt Dress</div>
-        <button class="shop-btn">Shop Now</button>
-      </div>
-      <div class="product-card" onclick="window.location.href='product.html?id=4'">
-        <img src="../public/images/mens-formal.jpg" alt="Men's Formal">
-        <div>Men's Formal</div>
-        <button class="shop-btn">Shop Now</button>
-      </div>
-      <div class="product-card" onclick="window.location.href='product.html?id=5'">
-        <img src="../public/images/womens-formal.jpg" alt="Women's Formal">
-        <div>Women's Formal</div>
-        <button class="shop-btn">Shop Now</button>
-      </div>
-      <div class="product-card" onclick="window.location.href='product.html?id=6'">
-        <img src="../public/images/bridal-attire.jpeg" alt="Bridal Attire">
-        <div>Bridal Attire</div>
-        <button class="shop-btn">Shop Now</button>
-      </div>
-      <div class="product-card" onclick="window.location.href='product.html?id=7'">
-        <img src="../public/images/coat.jpg" alt="Coat">
-        <div>Coat</div>
-        <button class="shop-btn">Shop Now</button>
-      </div>
-      <div class="product-card" onclick="window.location.href='product.html?id=8'">
-        <img src="../public/images/heels.jpg" alt="Heels">
-        <div>Heels</div>
-        <button class="shop-btn">Shop Now</button>
-      </div>
+    <div id="productCardsContainer" class="product-cards two-rows">
+      <!-- Product cards will be rendered here by JS -->
     </div>
     <div class="below-products-text">
       <div class="big">Fall closet essentials</div>
@@ -134,58 +109,16 @@
   </section>
 
   <section class="categories-section">
-    <div class="category-cards">
-      <div class="category-card" onclick="window.location.href='product.html?id=101'">
-        <img src="../public/images/leather-blazer.jpg" alt="Leather Blazers">
-        <div>Leather Blazers</div>
-        <button class="shop-btn">Shop Now</button>
-      </div>
-      <div class="category-card" onclick="window.location.href='product.html?id=102'">
-        <img src="../public/images/dark-denim.jpg" alt="Dark Denim">
-        <div>Dark Denim</div>
-        <button class="shop-btn">Shop Now</button>
-      </div>
-      <div class="category-card" onclick="window.location.href='product.html?id=103'">
-        <img src="../public/images/cozy-knit.jpeg" alt="Cozy Knits">
-        <div>Cozy Knits</div>
-        <button class="shop-btn">Shop Now</button>
-      </div>
-      <div class="category-card" onclick="window.location.href='product.html?id=104'">
-        <img src="../public/images/black-boots.jpg" alt="Black Boots">
-        <div>Black Boots</div>
-        <button class="shop-btn">Shop Now</button>
-      </div>
+    <div id="categoryCardsContainer" class="category-cards">
+      <!-- Category cards will be rendered here by JS -->
     </div>
   </section>
 
 
   <section class="extra-products-section">
     <h2>More Products & Accessories</h2>
-    <div class="extra-product-cards">
-      <div class="extra-product-card"><img src="../public/images/bag.jpg" alt="Bag">
-        <div>Trendy Bag</div><button class="shop-btn">Shop Now</button>
-      </div>
-      <div class="extra-product-card"><img src="../public/images/sneakers.jpg" alt="Sneakers">
-        <div>Sneakers</div><button class="shop-btn">Shop Now</button>
-      </div>
-      <div class="extra-product-card"><img src="../public/images/scarf.jpg" alt="Scarf">
-        <div>Scarf</div><button class="shop-btn">Shop Now</button>
-      </div>
-      <div class="extra-product-card"><img src="../public/images/hat.jpg" alt="Hat">
-        <div>Hat</div><button class="shop-btn">Shop Now</button>
-      </div>
-      <div class="extra-product-card"><img src="../public/images/watch.jpg" alt="Watch">
-        <div>Watch</div><button class="shop-btn">Shop Now</button>
-      </div>
-      <div class="extra-product-card"><img src="../public/images/belt.jpg" alt="Belt">
-        <div>Belt</div><button class="shop-btn">Shop Now</button>
-      </div>
-      <div class="extra-product-card"><img src="../public/images/earrings.jpg" alt="Earrings">
-        <div>Earrings</div><button class="shop-btn">Shop Now</button>
-      </div>
-      <div class="extra-product-card"><img src="../public/images/sunglasses.jpg" alt="Sunglasses">
-        <div>Sunglasses</div><button class="shop-btn">Shop Now</button>
-      </div>
+    <div id="extraProductCardsContainer" class="extra-product-cards">
+      <!-- Extra product cards will be rendered here by JS -->
     </div>
   </section>
 
@@ -288,6 +221,7 @@
   </footer>
 
   <script src="../public/js/index.js"></script>
+
 </body>
 
 </html>
