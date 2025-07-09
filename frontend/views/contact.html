@@ -57,7 +57,6 @@
         <textarea name="message" placeholder="Your Message" required></textarea>
         <button type="submit">Send Message</button>
       </form>
-      <div class="thank-you-msg" id="thankYouMsg">Thank you for reaching out! We'll get back to you soon.</div>
       <div class="contact-info">
         <div><b>Email:</b> support@reown.com</div>
         <div><b>Phone:</b> +91 98765 43210</div>
@@ -145,10 +144,22 @@
     </footer>
   </footer>
   <script>
-    document.getElementById('contactForm').onsubmit = function(e) {
+    document.getElementById('contactForm').onsubmit = async function(e) {
       e.preventDefault();
-      document.getElementById('thankYouMsg').style.display = 'block';
-      this.reset();
+      const name = this.name.value.trim();
+      const email = this.email.value.trim();
+      const message = this.message.value.trim();
+      try {
+        const response = await axios.post('http://localhost:5000/api/contact', { name, email, message });
+        if (response.data && response.data.success) {
+          alert('Message sent!');
+          this.reset();
+        } else {
+          alert(response.data && response.data.message ? response.data.message : 'Failed to send message.');
+        }
+      } catch (err) {
+        alert('Server error. Please try again later.');
+      }
     };
   </script>
 </body>
