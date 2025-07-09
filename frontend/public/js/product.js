@@ -159,20 +159,79 @@ async function handleBuyNow() {
   }
 }
 
-// Load product data
+// Fetch and render reviews for a product
+async function loadReviews(productId) {
+  const reviewsList = document.getElementById('reviewsList');
+  reviewsList.innerHTML = '<em>Loading reviews...</em>';
+  try {
+    const response = await apiCall(`/reviews/${productId}`);
+    if (response.success && response.reviews.length > 0) {
+      reviewsList.innerHTML = response.reviews.map(r => `
+        <div class="review-item" style="border-bottom:1px solid #eee; margin-bottom:12px; padding-bottom:10px;">
+          <div><b>${r.user?.name || 'User'}</b> <span style="color:#f5b50a;">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</span></div>
+          <div style="margin: 4px 0 0 0;">${r.comment ? r.comment : ''}</div>
+          <div style="font-size:12px; color:#888;">${new Date(r.createdAt).toLocaleString()}</div>
+        </div>
+      `).join('');
+    } else {
+      reviewsList.innerHTML = '<em>No reviews yet. Be the first to review!</em>';
+    }
+  } catch (err) {
+    reviewsList.innerHTML = '<span style="color:red;">Failed to load reviews.</span>';
+  }
+}
+
+// Show review form or login message
+function showReviewFormOrLogin() {
+  const isLoggedIn = isAuthenticated();
+  document.getElementById('reviewFormContainer').style.display = isLoggedIn ? 'block' : 'none';
+  document.getElementById('reviewLoginMsg').style.display = isLoggedIn ? 'none' : 'block';
+}
+
+// Handle review form submission
+function setupReviewForm(productId) {
+  const form = document.getElementById('reviewForm');
+  if (!form) return;
+  form.onsubmit = async function(e) {
+    e.preventDefault();
+    const rating = parseInt(document.getElementById('rating').value);
+    const comment = document.getElementById('comment').value.trim();
+    if (!rating) {
+      alert('Please select a rating.');
+      return;
+    }
+    try {
+      const token = localStorage.getItem('token');
+      await axios.post(`${API_BASE_URL}/reviews`, { productId, rating, comment }, {
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token && { 'Authorization': `Bearer ${token}` })
+        }
+      });
+      alert('Review submitted!');
+      form.reset();
+      loadReviews(productId);
+    } catch (err) {
+      alert('Failed to submit review.');
+    }
+  };
+}
+
+// Update loadProduct to also load reviews and setup review form
 async function loadProduct() {
   const productId = getProductId();
-  
   if (!productId) {
     alert('No product ID provided');
     window.location.href = '/views/index.html';
     return;
   }
-  
   try {
     const response = await getProduct(productId);
     if (response.success) {
       renderProduct(response.data);
+      loadReviews(productId);
+      showReviewFormOrLogin();
+      setupReviewForm(productId);
     } else {
       alert('Product not found');
       window.location.href = '/views/index.html';

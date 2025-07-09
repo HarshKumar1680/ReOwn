@@ -7,18 +7,6 @@
   <link rel="stylesheet" href="../public/css/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <style>
-  .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .nav-links {
-    display: flex;
-    gap: 1.5rem;
-    margin-left: auto;
-  }
-  </style>
 </head>
 <body>
   <header class="main-header">
@@ -67,6 +55,33 @@
       </div>
     </section>
   </main>
+
+  <section class="reviews-section">
+    <h2>Product Reviews</h2>
+    <div id="reviewsList">
+      <!-- Reviews will be loaded here -->
+    </div>
+    <div id="reviewFormContainer">
+      <h3>Write a Review</h3>
+      <form id="reviewForm">
+        <label for="rating">Rating:</label>
+        <select id="rating" name="rating" required>
+          <option value="">Select</option>
+          <option value="5">5 - Excellent</option>
+          <option value="4">4 - Good</option>
+          <option value="3">3 - Average</option>
+          <option value="2">2 - Poor</option>
+          <option value="1">1 - Terrible</option>
+        </select>
+        <br><br>
+        <label for="comment">Comment:</label><br>
+        <textarea id="comment" name="comment" rows="3"></textarea>
+        <br>
+        <button type="submit">Submit Review</button>
+      </form>
+    </div>
+    <div id="reviewLoginMsg">Please <a href="/views/login.html">login</a> to write a review.</div>
+  </section>
 
   <footer>
     <div class="footer-content">
