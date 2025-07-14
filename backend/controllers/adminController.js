@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const Product = require('../models/Product');
 
 // @desc    Get all users (Admin only)
 // @route   GET /api/admin/users
@@ -163,11 +164,25 @@ const toggleUserStatus = async (req, res) => {
   }
 };
 
+// @desc    Get all products (Admin only)
+// @route   GET /api/admin/products
+// @access  Private/Admin
+const getAllProducts = async (req, res) => {
+  try {
+    const products = await Product.find({});
+    res.json(products);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
 module.exports = {
   getAllUsers,
   getUserById,
   createUser,
   updateUser,
   deleteUser,
-  toggleUserStatus
+  toggleUserStatus,
+  getAllProducts
 }; 

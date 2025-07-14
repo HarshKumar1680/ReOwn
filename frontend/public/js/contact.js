@@ -42,6 +42,33 @@ function setupLogout() {
   }
 }
 
+document.addEventListener('DOMContentLoaded', function() {
+  const contactForm = document.getElementById('contactForm');
+  const thankYouMsg = document.getElementById('thankYouMsg');
+  if (thankYouMsg) thankYouMsg.style.display = 'none';
+
+  if (contactForm) {
+    contactForm.onsubmit = async function(e) {
+      e.preventDefault();
+      const formData = new FormData(contactForm);
+      const name = formData.get('name');
+      const email = formData.get('email');
+      const message = formData.get('message');
+      try {
+        const response = await axios.post(`${API_BASE_URL}/contact`, { name, email, message });
+        if (response.data && response.data.success) {
+          if (thankYouMsg) thankYouMsg.style.display = 'block';
+          contactForm.reset();
+        } else {
+          alert(response.data.message || 'Failed to send message.');
+        }
+      } catch (err) {
+        alert(err.response?.data?.message || 'Error sending message.');
+      }
+    };
+  }
+});
+
 // On page load
 (async function() {
   await updateNavbar();

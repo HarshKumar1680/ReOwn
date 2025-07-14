@@ -20,9 +20,16 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: [true, 'Please provide a password'],
+    required: function() {
+      // Only require password if not a Google user
+      return !this.googleId;
+    },
     minlength: [6, 'Password must be at least 6 characters'],
     select: false
+  },
+  googleId: {
+    type: String,
+    required: false
   },
   role: {
     type: String,
@@ -45,12 +52,13 @@ const userSchema = new mongoose.Schema({
 
 // Encrypt password before saving
 userSchema.pre('save', async function(next) {
-  if (!this.isModified('password')) {
+  if (!this.isModified('password') || !this.password) {
     next();
+    return;
   }
-  
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
+  next();
 });
 
 // Match user entered password to hashed password in database

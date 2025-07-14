@@ -131,16 +131,114 @@ function setupLogout() {
   }
 }
 
-// On page load
+// --- Product Reviews Logic ---
+const reviewsList = document.getElementById('reviewsList');
+const reviewForm = document.getElementById('reviewForm');
+const reviewRating = document.getElementById('reviewRating');
+const reviewComment = document.getElementById('reviewComment');
+let reviewsPage = 1;
+const reviewsLimit = 5;
+let reviewsCount = 0;
+let productId = null;
+
+function renderReviewsHeader(avgRating, count) {
+  let stars = '';
+  for (let i = 1; i <= 5; i++) {
+    stars += `<span style="color:${i <= Math.round(avgRating) ? '#FFD700' : '#ccc'};font-size:1.3em;">★</span>`;
+  }
+  return `<div style="margin-bottom:1rem;"><b>Average Rating:</b> ${avgRating.toFixed(1)} / 5 (${count} review${count !== 1 ? 's' : ''})<br>${stars}</div>`;
+}
+
+function renderReviewItem(r) {
+  return `<div style="border-bottom:1px solid #eee;padding:0.7em 0;">
+    <div>${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)} <b>${r.user?.name || 'User'}</b> <span style="color:#888;font-size:0.9em;">${new Date(r.createdAt).toLocaleDateString()}</span></div>
+    <div>${r.comment}</div>
+  </div>`;
+}
+
+async function fetchAndRenderReviews(reset = false) {
+  if (!productId) return;
+  if (reset) {
+    reviewsPage = 1;
+    if (reviewsList) reviewsList.innerHTML = '';
+  }
+  try {
+    const res = await axios.get(`${API_BASE_URL}/products/${productId}/reviews?page=${reviewsPage}&limit=${reviewsLimit}`);
+    if (res.data && res.data.success) {
+      reviewsCount = res.data.count;
+      if (reviewsList) {
+        if (reviewsPage === 1) {
+          reviewsList.innerHTML = renderReviewsHeader(res.data.avgRating, res.data.count);
+        }
+        res.data.data.forEach(r => {
+          reviewsList.innerHTML += renderReviewItem(r);
+        });
+        // Add Load More button if more reviews exist
+        let loadMoreBtn = document.getElementById('loadMoreReviewsBtn');
+        if (reviewsPage * reviewsLimit < reviewsCount) {
+          if (!loadMoreBtn) {
+            loadMoreBtn = document.createElement('button');
+            loadMoreBtn.id = 'loadMoreReviewsBtn';
+            loadMoreBtn.textContent = 'Load More';
+            loadMoreBtn.style.marginTop = '1em';
+            loadMoreBtn.onclick = () => {
+              reviewsPage++;
+              fetchAndRenderReviews();
+            };
+            reviewsList.appendChild(loadMoreBtn);
+          }
+        } else if (loadMoreBtn) {
+          loadMoreBtn.remove();
+        }
+      }
+    }
+  } catch (err) {
+    if (reviewsList) reviewsList.innerHTML = '<div style="color:red;">Error loading reviews.</div>';
+  }
+}
+
+if (reviewForm) {
+  reviewForm.onsubmit = async function(e) {
+    e.preventDefault();
+    const rating = parseInt(reviewRating.value);
+    const comment = reviewComment.value.trim();
+    if (!rating || !comment) {
+      alert('Please provide a rating and comment.');
+      return;
+    }
+    // Check login
+    const loggedIn = await isAuthenticated();
+    if (!loggedIn) {
+      alert('Please login to submit a review.');
+      window.location.href = '/views/login.html';
+      return;
+    }
+    try {
+      const res = await axios.post(`${API_BASE_URL}/products/${productId}/reviews`, { rating, comment }, { withCredentials: true });
+      if (res.data && res.data.success) {
+        alert('Review submitted!');
+        reviewForm.reset();
+        fetchAndRenderReviews(true);
+      } else {
+        alert(res.data.message || 'Error submitting review.');
+      }
+    } catch (err) {
+      alert(err.response?.data?.message || 'Error submitting review.');
+    }
+  };
+}
+
+// On page load (extend existing IIFE)
 (async function() {
   await updateNavbar();
   setupLogout();
-  const productId = getQueryParam('id');
+  productId = getQueryParam('id');
   if (!productId) {
     showError('No product ID provided');
     return;
   }
   const product = await fetchProductById(productId);
   renderProductDetails(product);
-  // Placeholder: Review form logic can be added here
+  // Fetch and render reviews
+  fetchAndRenderReviews(true);
 })(); 

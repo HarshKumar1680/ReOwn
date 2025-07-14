@@ -6,7 +6,8 @@ const {
   createUser, 
   updateUser, 
   deleteUser, 
-  toggleUserStatus 
+  toggleUserStatus, 
+  getAllProducts 
 } = require('../controllers/adminController');
 const { protect, admin } = require('../middleware/auth');
 
@@ -25,5 +26,8 @@ router.route('/users/:id')
   .delete(deleteUser);
 
 router.patch('/users/:id/toggle-status', toggleUserStatus);
+
+// Product management route
+router.get('/products', getAllProducts);
 
 module.exports = router; 

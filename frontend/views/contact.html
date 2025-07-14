@@ -5,17 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contact Us - Reown</title>
   <link rel="stylesheet" href="../public/css/style.css">
-  <style>
-    .contact-section { max-width: 520px; margin: 60px auto 40px auto; background: #fff; border-radius: 14px; box-shadow: 0 2px 16px rgba(0,0,0,0.07); padding: 36px 28px; }
-    .contact-section h1 { font-size: 2rem; margin-bottom: 18px; color: var(--primary); }
-    .contact-section form { display: flex; flex-direction: column; gap: 16px; }
-    .contact-section input, .contact-section textarea { padding: 12px; border-radius: 8px; border: 1px solid #ccc; font-size: 1rem; }
-    .contact-section textarea { min-height: 100px; resize: vertical; }
-    .contact-section button { background: var(--primary); color: #fff; border: none; border-radius: 30px; padding: 12px 0; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-top: 8px; transition: background 0.2s; }
-    .contact-section button:hover { background: var(--accent); color: #222; }
-    .contact-info { margin-top: 28px; color: #444; font-size: 1rem; }
-    .thank-you-msg { display: none; color: var(--primary); font-weight: bold; margin-top: 18px; text-align: center; }
-  </style>
 </head>
 <body>
   <header>
@@ -29,7 +18,7 @@
         <li><a href="/views/contact.html">Contact Us</a></li>
         <li><a href="/views/login.html" id="loginLink">Login</a></li>
         <li><a href="/views/signup.html" id="signupLink">Sign Up</a></li>
-        <li><a href="#" id="logoutLink" style="display:none;">Logout</a></li>
+        <li><a href="#" id="logoutLink" class="logout-red" style="display:none;">Logout</a></li>
       </ul>
     </nav>
   </header>
@@ -129,13 +118,6 @@
       </div>
     </footer>
   </footer>
-  <script>
-    document.getElementById('contactForm').onsubmit = function(e) {
-      e.preventDefault();
-      document.getElementById('thankYouMsg').style.display = 'block';
-      this.reset();
-    };
-  </script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="../public/js/contact.js"></script>
 </body>

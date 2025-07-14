@@ -32,4 +32,16 @@ const authorize = (...roles) => {
   };
 };
 
-module.exports = { protectSession, admin, authorize }; 
+// General protect middleware (for session or passport)
+const protect = (req, res, next) => {
+  if (req.isAuthenticated && req.isAuthenticated()) {
+    return next();
+  }
+  if (req.session && req.session.user) {
+    req.user = req.session.user;
+    return next();
+  }
+  return res.status(401).json({ message: 'Not authorized, please login' });
+};
+
+module.exports = { protectSession, admin, authorize, protect }; 

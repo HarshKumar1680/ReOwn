@@ -281,7 +281,7 @@ const products = [
 
 const seedAllProducts = async () => {
   try {
-    await mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://harsh:harsh9999hk@cluster0.5ub14.mongodb.net/reown?retryWrites=true&w=majority&appName=Cluster0', {
+    await mongoose.connect(process.env.MONGODB_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true
     });

@@ -1,28 +1,46 @@
-const Contact = require('../models/Contact');
+const ContactMessage = require('../models/ContactMessage');
+const nodemailer = require('nodemailer');
 
-exports.submitContact = async (req, res) => {
+// @desc    Handle contact form submission
+// @route   POST /api/contact
+// @access  Public
+const submitContactMessage = async (req, res) => {
   try {
     const { name, email, message } = req.body;
     if (!name || !email || !message) {
       return res.status(400).json({ success: false, message: 'All fields are required.' });
     }
-    // Save to DB
-    const contact = new Contact({ name, email, message });
-    await contact.save();
+    // Save to database
+    const contactMessage = await ContactMessage.create({ name, email, message });
 
-    res.json({ success: true, message: 'Message submitted successfully!' });
+    // Send email to support using Gmail SMTP
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.CONTACT_EMAIL_USER,
+        pass: process.env.CONTACT_EMAIL_PASS
+      }
+    });
+
+    const mailOptions = {
+      from: process.env.CONTACT_EMAIL_USER,
+      to: process.env.CONTACT_EMAIL_TO,
+      subject: 'New Contact Message from ReOwnold',
+      text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
+      html: `<h3>New Contact Message</h3><p><b>Name:</b> ${name}<br/><b>Email:</b> ${email}<br/><b>Message:</b><br/>${message}</p>`
+    };
+
+    try {
+      await transporter.sendMail(mailOptions);
+    } catch (emailErr) {
+      // Log but don't fail the request if email fails
+      console.error('Failed to send contact email:', emailErr);
+    }
+
+    res.status(201).json({ success: true, message: 'Message received. Thank you!', data: contactMessage });
   } catch (err) {
-    console.error('Contact form error:', err);
-    res.status(500).json({ success: false, message: 'Server error. Please try again later.' });
+    res.status(500).json({ success: false, message: 'Server error', error: err.message });
   }
 };
 
-exports.getContacts = async (req, res) => {
-  try {
-    const contacts = await Contact.find().sort({ createdAt: -1 });
-    res.json({ success: true, contacts });
-  } catch (err) {
-    console.error('Get contacts error:', err);
-    res.status(500).json({ success: false, message: 'Server error. Please try again later.' });
-  }
-}; 
+module.exports = { submitContactMessage }; 

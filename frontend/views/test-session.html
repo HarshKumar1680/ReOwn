@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <button onclick="checkSession()">Check Session</button>
+  <pre id="result"></pre>
+  <script>
+    async function checkSession() {
+      const res = await fetch('http://localhost:5000/api/auth/session', { credentials: 'include' });
+      const data = await res.json();
+      document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+    }
+  </script>
+</body>
+</html> 

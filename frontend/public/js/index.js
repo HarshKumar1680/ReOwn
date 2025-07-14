@@ -176,12 +176,12 @@ function renderFixedCards(cards, section, containerId, cardClass) {
 // Update all product cards
 function updateProductCards(products) {
   const cards = matchBackendProducts(homepageCards, products);
-  // Debug: log cards that are not mapped
-  cards.forEach(card => {
-    if (card.isDemo) {
-      console.warn(`No backend product found for card: ${card.name}`);
-    }
-  });
+  // Debug: log cards that are not mapped (removed)
+  // cards.forEach(card => {
+  //   if (card.isDemo) {
+  //     console.warn(`No backend product found for card: ${card.name}`);
+  //   }
+  // });
   renderFixedCards(cards, 'product', 'productCardsContainer', 'product-card');
   renderFixedCards(cards, 'category', 'categoryCardsContainer', 'category-card');
   renderFixedCards(cards, 'extra', 'extraProductCardsContainer', 'extra-product-card');
@@ -215,8 +215,9 @@ function addFallbackShopBtnHandlers() {
   document.querySelectorAll('.shop-btn').forEach(btn => {
     if (!btn.onclick && !btn._hasDynamicHandler) {
       btn.addEventListener('click', function() {
-        console.warn('No product mapped to this Shop Now button. Check product mapping and API order.');
-        alert('This product is not available. Please try another.');
+        // console.warn('No product mapped to this Shop Now button. Check product mapping and API order.');
+        // alert('This product is not available. Please try another.');
+        // Do nothing: button is disabled, no alert needed
       });
     }
   });
