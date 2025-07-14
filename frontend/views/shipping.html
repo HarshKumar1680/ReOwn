@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Shipping Address - Reown</title>
+  <link rel="stylesheet" href="../public/css/style.css">
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="logo">Reown</div>
+      <ul class="nav-links">
+        <li><a href="/views/index.html">Home</a></li>
+        <li><a href="/views/cart.html">Cart</a></li>
+        <li><a href="/views/dashboard.html">Dashboard</a></li>
+        <li><a href="/views/admin.html">Admin</a></li>
+        <li><a href="/views/contact.html">Contact Us</a></li>
+        <li><a href="/views/login.html" id="loginLink">Login</a></li>
+        <li><a href="/views/signup.html" id="signupLink">Sign Up</a></li>
+        <li><a href="#" id="logoutLink" class="logout-red" style="display:none;">Logout</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main style="max-width:500px;margin:2rem auto;padding:2rem;background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.07);">
+    <h2>Shipping Address</h2>
+    <form id="shippingForm">
+      <label>Full Name:<br><input type="text" id="shipFullName" required></label><br>
+      <label>Address:<br><input type="text" id="shipAddress" required></label><br>
+      <label>City:<br><input type="text" id="shipCity" required></label><br>
+      <label>Postal Code:<br><input type="text" id="shipPostalCode" required></label><br>
+      <label>Country:<br><input type="text" id="shipCountry" required></label><br>
+      <label>Phone:<br><input type="text" id="shipPhone"></label><br>
+      <div style="margin-top:1em;display:flex;gap:1em;justify-content:flex-end;">
+        <button type="button" class="cta-btn" id="cancelShippingBtn" style="background:#888;" onclick="window.location.href='/views/cart.html'">Cancel</button>
+        <button type="submit" class="cta-btn">Continue to Checkout</button>
+      </div>
+    </form>
+  </main>
+  <script src="../public/js/shipping.js"></script>
+</body>
+</html> 

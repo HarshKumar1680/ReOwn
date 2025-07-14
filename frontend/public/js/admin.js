@@ -50,6 +50,113 @@ async function deleteUser(id) {
   return apiFetch(`${API_BASE_URL}/admin/users/${id}`, { method: 'DELETE' });
 }
 
+// --- Admin Orders Management ---
+const adminOrdersPanel = document.getElementById('adminOrders');
+const adminOrdersTableBody = document.getElementById('adminOrdersTableBody');
+const adminOrdersEmpty = document.getElementById('adminOrdersEmpty');
+const orderDetailsModal = document.getElementById('orderDetailsModal');
+const orderDetailsContent = document.getElementById('orderDetailsContent');
+const closeOrderDetails = document.getElementById('closeOrderDetails');
+
+async function fetchAllOrders() {
+  try {
+    const res = await fetch('http://localhost:5000/api/orders', { credentials: 'include' });
+    const data = await res.json();
+    if (!data.success) throw new Error(data.message || 'Failed to fetch orders');
+    return data.data;
+  } catch (err) {
+    adminOrdersTableBody.innerHTML = '';
+    adminOrdersEmpty.style.display = 'block';
+    return [];
+  }
+}
+
+function renderAdminOrders(orders) {
+  adminOrdersTableBody.innerHTML = '';
+  if (!orders.length) {
+    adminOrdersEmpty.style.display = 'block';
+    return;
+  }
+  adminOrdersEmpty.style.display = 'none';
+  orders.forEach(order => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td style="padding:12px;">${new Date(order.createdAt).toLocaleString()}</td>
+      <td>${order.user ? order.user.name : 'N/A'}</td>
+      <td>${order.status}</td>
+      <td>₹${order.totalPrice}</td>
+      <td><button class="cta-btn" data-id="${order._id}">Details</button></td>
+      <td>
+        <select class="order-status-select" data-id="${order._id}">
+          <option value="processing"${order.status==='processing'?' selected':''}>Processing</option>
+          <option value="shipped"${order.status==='shipped'?' selected':''}>Shipped</option>
+          <option value="delivered"${order.status==='delivered'?' selected':''}>Delivered</option>
+          <option value="cancelled"${order.status==='cancelled'?' selected':''}>Cancelled</option>
+        </select>
+      </td>
+    `;
+    adminOrdersTableBody.appendChild(tr);
+  });
+  // Details button
+  adminOrdersTableBody.querySelectorAll('button[data-id]').forEach(btn => {
+    btn.onclick = () => showAdminOrderDetails(btn.getAttribute('data-id'));
+  });
+  // Status select
+  adminOrdersTableBody.querySelectorAll('.order-status-select').forEach(sel => {
+    sel.onchange = async function() {
+      const orderId = sel.getAttribute('data-id');
+      const status = sel.value;
+      try {
+        const res = await fetch(`http://localhost:5000/api/orders/${orderId}/status`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ status })
+        });
+        const data = await res.json();
+        if (!data.success) throw new Error(data.message || 'Failed to update status');
+        alert('Order status updated!');
+        fetchAndRenderAdminOrders();
+      } catch (err) {
+        alert(err.message || 'Error updating status.');
+      }
+    };
+  });
+}
+
+async function showAdminOrderDetails(orderId) {
+  try {
+    const res = await fetch(`http://localhost:5000/api/orders/${orderId}`, { credentials: 'include' });
+    const data = await res.json();
+    if (!data.success) throw new Error(data.message || 'Failed to fetch order details');
+    const order = data.data;
+    orderDetailsContent.innerHTML = `
+      <h3>Order Details</h3>
+      <div><b>Date:</b> ${new Date(order.createdAt).toLocaleString()}</div>
+      <div><b>Status:</b> ${order.status}</div>
+      <div><b>User:</b> ${order.user ? order.user.name + ' (' + order.user.email + ')' : 'N/A'}</div>
+      <div><b>Total:</b> ₹${order.totalPrice}</div>
+      <div><b>Shipping:</b> ${order.shippingAddress.fullName}, ${order.shippingAddress.address}, ${order.shippingAddress.city}, ${order.shippingAddress.postalCode}, ${order.shippingAddress.country}${order.shippingAddress.phone ? ', ' + order.shippingAddress.phone : ''}</div>
+      <div style="margin-top:1em;"><b>Items:</b></div>
+      <ul style="margin:0 0 1em 1em;padding:0;">
+        ${order.items.map(item => `<li>${item.quantity} x ${item.product} @ ₹${item.price}</li>`).join('')}
+      </ul>
+    `;
+    orderDetailsModal.style.display = 'block';
+  } catch (err) {
+    alert('Error loading order details.');
+  }
+}
+if (closeOrderDetails) closeOrderDetails.onclick = function() { orderDetailsModal.style.display = 'none'; };
+window.onclick = function(event) {
+  if (event.target === orderDetailsModal) orderDetailsModal.style.display = 'none';
+};
+
+async function fetchAndRenderAdminOrders() {
+  const orders = await fetchAllOrders();
+  renderAdminOrders(orders);
+}
+
 // DOM Elements
 const adminPanels = {
   products: document.getElementById('adminProducts')
@@ -331,11 +438,12 @@ adminPanels.products.addEventListener('click', async function(e) {
   }
 });
 
-// Tab switching logic
+// Tab switching logic (extend to include orders)
 const adminTabs = document.querySelectorAll('.admin-tab');
 const adminPanelsAll = {
   users: document.getElementById('adminUsers'),
-  products: document.getElementById('adminProducts')
+  products: document.getElementById('adminProducts'),
+  orders: document.getElementById('adminOrders')
 };
 adminTabs.forEach(tab => {
   tab.addEventListener('click', () => {
@@ -346,6 +454,7 @@ adminTabs.forEach(tab => {
     });
     if (tab.dataset.tab === 'users') renderUsers();
     if (tab.dataset.tab === 'products') renderProducts();
+    if (tab.dataset.tab === 'orders') fetchAndRenderAdminOrders();
   });
 });
 

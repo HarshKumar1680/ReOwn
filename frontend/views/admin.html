@@ -30,6 +30,7 @@
       <aside class="admin-nav">
         <button class="admin-tab active" data-tab="users">Users</button>
         <button class="admin-tab" data-tab="products">Products</button>
+        <button class="admin-tab" data-tab="orders">Orders</button>
         <button id="logoutBtn" class="cta-btn">Logout</button>
       </aside>
       <div class="admin-content">
@@ -46,6 +47,27 @@
           <button id="addProductBtn" class="cta-btn" style="margin-bottom:1rem;">Add Product</button>
           <div class="admin-table">
             <!-- Products will be rendered here by JS -->
+          </div>
+        </div>
+        <div id="adminOrders" class="admin-panel" style="display:none;">
+          <h2>All Orders</h2>
+          <div class="admin-table">
+            <table style="width:100%;border-collapse:collapse;margin-top:1rem;">
+              <thead>
+                <tr style="background:#f5f5f5;">
+                  <th style="padding:12px;">Order Date</th>
+                  <th>User</th>
+                  <th>Status</th>
+                  <th>Total</th>
+                  <th>Details</th>
+                  <th>Update Status</th>
+                </tr>
+              </thead>
+              <tbody id="adminOrdersTableBody">
+                <!-- Orders will be rendered here by JS -->
+              </tbody>
+            </table>
+            <div id="adminOrdersEmpty" style="display:none;text-align:center;color:#888;margin-top:2rem;">No orders found.</div>
           </div>
         </div>
       </div>
@@ -150,6 +172,15 @@
         <div style="margin-top:1rem;">
           <button id="confirmDeleteProductBtn" class="cta-btn" style="background:#ff6b6b;color:white;">Delete</button>
           <button id="cancelDeleteProductBtn" class="cta-btn" style="background:#ccc;color:#222;margin-left:10px;">Cancel</button>
+        </div>
+      </div>
+    </div>
+    <!-- Order Details Modal -->
+    <div id="orderDetailsModal" class="modal" style="display:none;">
+      <div class="modal-content" style="max-width:500px;margin:auto;">
+        <span class="close" id="closeOrderDetails">&times;</span>
+        <div id="orderDetailsContent">
+          <!-- Order details will be rendered here -->
         </div>
       </div>
     </div>

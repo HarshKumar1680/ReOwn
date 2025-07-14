@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Checkout - Reown</title>
+  <link rel="stylesheet" href="../public/css/style.css">
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="logo">Reown</div>
+      <ul class="nav-links">
+        <li><a href="/views/index.html">Home</a></li>
+        <li><a href="/views/cart.html">Cart</a></li>
+        <li><a href="/views/dashboard.html">Dashboard</a></li>
+        <li><a href="/views/admin.html">Admin</a></li>
+        <li><a href="/views/contact.html">Contact Us</a></li>
+        <li><a href="/views/login.html" id="loginLink">Login</a></li>
+        <li><a href="/views/signup.html" id="signupLink">Sign Up</a></li>
+        <li><a href="#" id="logoutLink" class="logout-red" style="display:none;">Logout</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main style="max-width:900px;margin:2rem auto;padding:2rem;background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.07);">
+    <h2>Checkout</h2>
+    <div id="checkoutSummary">
+      <!-- Cart summary will be rendered here by JS -->
+    </div>
+    <form id="checkoutForm" style="margin-top:2em;">
+      <!-- Shipping address fields removed; address is taken from localStorage -->
+      <div style="margin-top:1em;display:flex;gap:1em;justify-content:flex-end;">
+        <button type="button" class="cta-btn" id="cancelCheckoutBtn" style="background:#888;" onclick="window.location.href='/views/cart.html'">Cancel</button>
+        <button type="submit" class="cta-btn">Place Order</button>
+      </div>
+    </form>
+  </main>
+  <!-- Order Confirmation Modal -->
+  <div id="orderModal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <span class="close" id="closeModal">&times;</span>
+      <p id="orderModalMessage">Order placed successfully!</p>
+    </div>
+  </div>
+  <script src="../public/js/checkout.js"></script>
+</body>
+</html> 
