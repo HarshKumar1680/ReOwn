@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { protect } = require('../middleware/auth');
+const { protectSession } = require('../middleware/auth');
 const {
   getCart,
   addToCart,
@@ -11,8 +11,8 @@ const {
   buyNow
 } = require('../controllers/cartController');
 
-// All cart routes are protected (require authentication)
-router.use(protect);
+// All cart routes are protected (require session authentication)
+router.use(protectSession);
 
 router.get('/', getCart);
 router.get('/count', getCartCount);
@@ -21,7 +21,7 @@ router.put('/:productId', updateCartItem);
 router.delete('/:productId', removeFromCart);
 router.delete('/', clearCart);
 
-router.post('/add', protect, addToCart);
-router.post('/buy', protect, buyNow);
+router.post('/add', addToCart);
+router.post('/buy', buyNow);
 
 module.exports = router; 

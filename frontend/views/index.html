@@ -7,35 +7,22 @@
   <title>Reown - Thrift Shopping</title>
   <link rel="stylesheet" href="../public/css/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <link rel="icon" type="image/x-icon" href="../public/favicon.ico">
 </head>
 
 <body>
-  <header class="main-header">
-    <div class="header-left">
-      <div class="nav-arrows">
-        <button class="arrow-btn" onclick="window.history.back()" title="Back">
-          <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
-            <path d="M20 8L12 16L20 24" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-        <button class="arrow-btn" onclick="window.history.forward()" title="Forward">
-          <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
-            <path d="M12 8L20 16L12 24" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-      </div>
-      <div class="logo baseline-logo">Reown</div>
-    </div>
+  <header>
     <nav class="navbar">
+      <div class="logo">Reown</div>
       <ul class="nav-links">
         <li><a href="/views/index.html">Home</a></li>
         <li><a href="/views/cart.html">Cart</a></li>
         <li><a href="/views/dashboard.html">Dashboard</a></li>
         <li><a href="/views/admin.html">Admin</a></li>
         <li><a href="/views/contact.html">Contact Us</a></li>
-        <li><a href="/views/login.html">Login</a></li>
-        <li><a href="/views/signup.html">Sign Up</a></li>
+        <li><a href="/views/login.html" id="loginLink">Login</a></li>
+        <li><a href="/views/signup.html" id="signupLink">Sign Up</a></li>
+        <li><a href="#" id="logoutLink" style="display:none;">Logout</a></li>
       </ul>
     </nav>
   </header>
@@ -98,10 +85,9 @@
     <span class="big">Fall freshness, always up to 60% off est. retail</span>
   </div>
 
+
   <section class="products-section" id="products-section">
-    <div id="productCardsContainer" class="product-cards two-rows">
-      <!-- Product cards will be rendered here by JS -->
-    </div>
+    <div id="productCardsContainer" class="product-cards two-rows"></div>
     <div class="below-products-text">
       <div class="big">Fall closet essentials</div>
       <div class="small">Your best fall closet is just one thrift spree away. Save on must-have essentials.</div>
@@ -109,18 +95,13 @@
   </section>
 
   <section class="categories-section">
-    <div id="categoryCardsContainer" class="category-cards">
-      <!-- Category cards will be rendered here by JS -->
-    </div>
+    <div id="categoryCardsContainer" class="category-cards"></div>
   </section>
 
-
-  <section class="extra-products-section">
-    <h2>More Products & Accessories</h2>
-    <div id="extraProductCardsContainer" class="extra-product-cards">
-      <!-- Extra product cards will be rendered here by JS -->
-    </div>
-  </section>
+  <div class="more-products-section">
+    <h2 id="moreProductsHeading" style="text-align:center; margin-top:2rem;">More Products & Accessories</h2>
+    <div id="extraProductCardsContainer" class="extra-product-cards"></div>
+  </div>
 
   <!-- Top Brands Section -->
   <div class="top-brands-section">
@@ -219,9 +200,9 @@
       </div>
     </div>
   </footer>
-
+  <!-- Ensure Axios CDN is included before the main JS file -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="../public/js/index.js"></script>
-
 </body>
 
 </html>

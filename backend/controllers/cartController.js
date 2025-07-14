@@ -6,17 +6,15 @@ const Product = require('../models/Product');
 // @access  Private
 const getCart = async (req, res) => {
   try {
-    console.log('getCart: user id:', req.user && req.user.id);
-    let cart = await Cart.findOne({ user: req.user.id }).populate({
+    let cart = await Cart.findOne({ user: req.user._id }).populate({
       path: 'items.product',
       select: 'name price originalPrice image description stock size condition brand'
     });
     
     if (!cart) {
-      cart = await Cart.create({ user: req.user.id, items: [] });
+      cart = await Cart.create({ user: req.user._id, items: [] });
     }
     
-    console.log('getCart: cart items:', cart.items);
     res.json({ 
       success: true, 
       data: cart,
@@ -33,9 +31,9 @@ const getCart = async (req, res) => {
 // @access  Private
 const addToCart = async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user._id;
     const { productId, quantity } = req.body;
-    console.log('addToCart: userId:', userId, 'productId:', productId, 'quantity:', quantity);
+
     if (!productId || !quantity) {
       return res.status(400).json({ success: false, message: 'Product ID and quantity required.' });
     }
@@ -45,15 +43,23 @@ const addToCart = async (req, res) => {
       cart = new Cart({ user: userId, items: [] });
     }
 
-    const itemIndex = cart.items.findIndex(item => item.product.toString() === productId);
-    if (itemIndex > -1) {
-      cart.items[itemIndex].quantity += quantity;
-    } else {
-      cart.items.push({ product: productId, quantity });
-    }
+    // Debug logs
+    console.log('➡️ userId:', userId);
+    console.log('➡️ productId:', productId);
+    console.log('➡️ quantity:', quantity);
 
-    await cart.save();
-    console.log('addToCart: cart after save:', cart.items);
+    // Use model method
+    await cart.addItem(productId, quantity);
+
+    // Populate product details for the response
+    await cart.populate({
+      path: 'items.product',
+      select: 'name price originalPrice image description stock size condition brand'
+    });
+
+    // Debug log updated cart
+    console.log('🛒 Updated Cart:', JSON.stringify(cart, null, 2));
+
     res.json({ success: true, message: 'Added to cart', cart });
   } catch (err) {
     res.status(500).json({ success: false, message: 'Server error', error: err.message });
@@ -83,7 +89,7 @@ const updateCartItem = async (req, res) => {
     }
     
     // Find cart
-    const cart = await Cart.findOne({ user: req.user.id });
+    const cart = await Cart.findOne({ user: req.user._id });
     if (!cart) {
       return res.status(404).json({ success: false, message: 'Cart not found' });
     }
@@ -117,7 +123,7 @@ const removeFromCart = async (req, res) => {
     const { productId } = req.params;
     
     // Find cart
-    const cart = await Cart.findOne({ user: req.user.id });
+    const cart = await Cart.findOne({ user: req.user._id });
     if (!cart) {
       return res.status(404).json({ success: false, message: 'Cart not found' });
     }
@@ -148,7 +154,7 @@ const removeFromCart = async (req, res) => {
 // @access  Private
 const clearCart = async (req, res) => {
   try {
-    const cart = await Cart.findOne({ user: req.user.id });
+    const cart = await Cart.findOne({ user: req.user._id });
     if (!cart) {
       return res.status(404).json({ success: false, message: 'Cart not found' });
     }
@@ -172,7 +178,7 @@ const clearCart = async (req, res) => {
 // @access  Private
 const getCartCount = async (req, res) => {
   try {
-    const cart = await Cart.findOne({ user: req.user.id });
+    const cart = await Cart.findOne({ user: req.user._id });
     const count = cart ? cart.items.reduce((total, item) => total + item.quantity, 0) : 0;
     
     res.json({ success: true, count });

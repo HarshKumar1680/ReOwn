@@ -1,348 +1,146 @@
-// API Configuration
+// Frontend served from http://localhost:5500
+// Backend API at http://localhost:5000/api
 const API_BASE_URL = 'http://localhost:5000/api';
 
-// Check if user is authenticated
-function isAuthenticated() {
-  return localStorage.getItem('token') !== null;
+function getQueryParam(name) {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get(name);
 }
 
-// API helper functions using axios
-async function apiCall(endpoint, options = {}) {
-  const token = localStorage.getItem('token');
-  const defaultOptions = {
-    headers: {
-      'Content-Type': 'application/json',
-      ...(token && { 'Authorization': `Bearer ${token}` })
-    },
-    method: 'GET',
-    data: undefined,
-    params: undefined
-  };
-  const config = { ...defaultOptions, ...options };
+async function fetchProductById(productId) {
   try {
-    const response = await axios({
-      url: `${API_BASE_URL}${endpoint}`,
-      method: config.method,
-      headers: config.headers,
-      data: config.data,
-      params: config.params
-    });
+    const response = await axios.get(`${API_BASE_URL}/products/${productId}`);
     return response.data;
-  } catch (error) {
-    console.error('API call failed:', error);
-    throw error;
-  }
-}
-
-// Get product by ID
-async function getProduct(productId) {
-  try {
-    const response = await apiCall(`/products/${productId}`);
-    return response;
   } catch (error) {
     console.error('Error fetching product:', error);
-    throw error;
+    return null;
   }
 }
 
-// Add item to cart
-async function addToCart(productId, quantity = 1) {
+// Ensure showMessage is only called with a real message
+function showMessage(msg) {
+  if (!msg) return; // Do not show empty alerts
+  alert(msg);
+}
+function showError(msg) {
+  const errDiv = document.getElementById('product-error');
+  if (errDiv) errDiv.textContent = msg;
+}
+function clearMessages() {
+  showMessage('');
+  showError('');
+}
+
+async function isAuthenticated() {
   try {
-    const token = localStorage.getItem('token');
-    const response = await axios.post(`${API_BASE_URL}/cart/add`, { productId, quantity }, {
-      headers: {
-        'Content-Type': 'application/json',
-        ...(token && { 'Authorization': `Bearer ${token}` })
-      }
-    });
-    return response.data;
+    const response = await axios.get(`${API_BASE_URL}/auth/session`, { withCredentials: true });
+    return response.data && response.data.loggedIn;
   } catch (error) {
-    console.error('Error adding to cart:', error);
-    throw error;
+    return false;
   }
 }
 
-// Buy now
-async function buyNow(productId, quantity = 1) {
-  try {
-    const token = localStorage.getItem('token');
-    const response = await axios.post(`${API_BASE_URL}/cart/buy`, { productId, quantity }, {
-      headers: {
-        'Content-Type': 'application/json',
-        ...(token && { 'Authorization': `Bearer ${token}` })
-      }
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Error buying now:', error);
-    throw error;
-  }
-}
-
-// Get product ID from URL
-function getProductId() {
-  const params = new URLSearchParams(window.location.search);
-  return params.get('id');
-}
-
-// Render product details
-function renderProduct(product) {
-  document.getElementById('productImg').src = product.image;
-  document.getElementById('productImg').alt = product.name;
-  document.getElementById('productName').textContent = product.name;
-  document.getElementById('productPrice').textContent = `₹${product.price}`;
-  document.querySelector('.original-price').textContent = `₹${product.originalPrice}`;
-  document.getElementById('productDesc').textContent = product.description;
-  
-  // Add product details
-  const productDetails = document.createElement('div');
-  productDetails.className = 'product-details';
-  productDetails.innerHTML = `
-    <div class="detail-item">
-      <strong>Size:</strong> ${product.size}
-    </div>
-    <div class="detail-item">
-      <strong>Condition:</strong> ${product.condition}
-    </div>
-    <div class="detail-item">
-      <strong>Brand:</strong> ${product.brand || 'N/A'}
-    </div>
-    <div class="detail-item">
-      <strong>Stock:</strong> ${product.stock} available
-    </div>
-  `;
-  
-  // Insert after description
-  const descElement = document.getElementById('productDesc');
-  descElement.parentNode.insertBefore(productDetails, descElement.nextSibling);
-}
-
-// Handle add to cart
-async function handleAddToCart() {
-  const productId = getProductId();
-  if (!isAuthenticated()) {
-    alert('Please login to add items to cart');
-    window.location.href = '/views/login.html';
+async function handleAddToCart(productId) {
+  clearMessages();
+  const loggedIn = await isAuthenticated();
+  if (!loggedIn) {
+    showError('Please login to add items to cart. Redirecting...');
+    setTimeout(() => window.location.href = '/views/login.html', 1500);
     return;
   }
   try {
-    const response = await addToCart(productId, 1);
-    if (response.success) {
-      alert('Item added to cart successfully!');
-      updateCartCount();
+    const response = await axios.post(`${API_BASE_URL}/cart`, { productId, quantity: 1 }, { withCredentials: true });
+    if (response.data && response.data.success) {
+      showMessage('Item added to cart successfully!');
     } else {
-      alert(response.message || 'Failed to add item to cart');
+      showError(response.data.message || 'Failed to add item to cart.');
     }
   } catch (error) {
-    alert('Error adding item to cart. Please try again.');
+    showError('Error adding item to cart.');
   }
 }
 
-// Handle buy now
-async function handleBuyNow() {
-  const productId = getProductId();
-  if (!isAuthenticated()) {
-    alert('Please login to purchase items');
-    window.location.href = '/views/login.html';
+async function handleBuyNow(productId) {
+  clearMessages();
+  const loggedIn = await isAuthenticated();
+  if (!loggedIn) {
+    showError('Please login to buy items. Redirecting...');
+    setTimeout(() => window.location.href = '/views/login.html', 1500);
     return;
   }
   try {
-    const response = await buyNow(productId, 1);
-    if (response.success) {
-      alert('Buy now successful (cart updated)!');
-      updateCartCount();
+    const response = await axios.post(`${API_BASE_URL}/cart`, { productId, quantity: 1 }, { withCredentials: true });
+    if (response.data && response.data.success) {
+      showMessage('Item added to cart! Redirecting to cart...');
+      setTimeout(() => window.location.href = '/views/cart.html', 1500);
     } else {
-      alert(response.message || 'Failed to buy now');
+      showError(response.data.message || 'Failed to buy item.');
     }
   } catch (error) {
-    alert('Error with buy now. Please try again.');
+    showError('Error buying item.');
   }
 }
 
-// Fetch and render reviews for a product
-async function loadReviews(productId) {
-  const reviewsList = document.getElementById('reviewsList');
-  reviewsList.innerHTML = '<em>Loading reviews...</em>';
-  try {
-    const response = await apiCall(`/reviews/${productId}`);
-    if (response.success && response.reviews.length > 0) {
-      reviewsList.innerHTML = response.reviews.map(r => `
-        <div class="review-item" style="border-bottom:1px solid #eee; margin-bottom:12px; padding-bottom:10px;">
-          <div><b>${r.user?.name || 'User'}</b> <span style="color:#f5b50a;">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</span></div>
-          <div style="margin: 4px 0 0 0;">${r.comment ? r.comment : ''}</div>
-          <div style="font-size:12px; color:#888;">${new Date(r.createdAt).toLocaleString()}</div>
-        </div>
-      `).join('');
-    } else {
-      reviewsList.innerHTML = '<em>No reviews yet. Be the first to review!</em>';
-    }
-  } catch (err) {
-    reviewsList.innerHTML = '<span style="color:red;">Failed to load reviews.</span>';
+function renderProductDetails(product) {
+  if (!product || !product.data) {
+    showError('Product not found.');
+    return;
+  }
+  const p = product.data;
+  document.getElementById('productImg').src = p.image;
+  document.getElementById('productImg').alt = p.name;
+  document.getElementById('productName').textContent = p.name;
+  document.getElementById('productOriginalPrice').textContent = `₹${p.originalPrice}`;
+  document.getElementById('productPrice').textContent = `₹${p.price}`;
+  document.getElementById('productDesc').textContent = p.description || '';
+  document.getElementById('productShipping').textContent = 'Free shipping available.';
+  document.getElementById('buyNowBtn').onclick = () => handleBuyNow(p._id);
+  document.getElementById('addToCartBtn').onclick = () => handleAddToCart(p._id);
+}
+
+// Update navbar based on authentication status
+async function updateNavbar() {
+  const loggedIn = await isAuthenticated();
+  const loginLink = document.getElementById('loginLink');
+  const signupLink = document.getElementById('signupLink');
+  const logoutLink = document.getElementById('logoutLink');
+  if (loggedIn) {
+    if (loginLink) loginLink.style.display = 'none';
+    if (signupLink) signupLink.style.display = 'none';
+    if (logoutLink) logoutLink.style.display = 'inline';
+  } else {
+    if (loginLink) loginLink.style.display = 'inline';
+    if (signupLink) signupLink.style.display = 'inline';
+    if (logoutLink) logoutLink.style.display = 'none';
   }
 }
 
-// Show review form or login message
-function showReviewFormOrLogin() {
-  const isLoggedIn = isAuthenticated();
-  document.getElementById('reviewFormContainer').style.display = isLoggedIn ? 'block' : 'none';
-  document.getElementById('reviewLoginMsg').style.display = isLoggedIn ? 'none' : 'block';
+// Setup logout functionality
+function setupLogout() {
+  const logoutLink = document.getElementById('logoutLink');
+  if (logoutLink) {
+    logoutLink.addEventListener('click', async (e) => {
+      e.preventDefault();
+      try {
+        await axios.post(`${API_BASE_URL}/auth/logout`, {}, { withCredentials: true });
+        window.location.reload();
+      } catch (error) {
+        showError('Logout failed. Please try again.');
+      }
+    });
+  }
 }
 
-// Handle review form submission
-function setupReviewForm(productId) {
-  const form = document.getElementById('reviewForm');
-  if (!form) return;
-  form.onsubmit = async function(e) {
-    e.preventDefault();
-    const rating = parseInt(document.getElementById('rating').value);
-    const comment = document.getElementById('comment').value.trim();
-    if (!rating) {
-      alert('Please select a rating.');
-      return;
-    }
-    try {
-      const token = localStorage.getItem('token');
-      await axios.post(`${API_BASE_URL}/reviews`, { productId, rating, comment }, {
-        headers: {
-          'Content-Type': 'application/json',
-          ...(token && { 'Authorization': `Bearer ${token}` })
-        }
-      });
-      alert('Review submitted!');
-      form.reset();
-      loadReviews(productId);
-    } catch (err) {
-      alert('Failed to submit review.');
-    }
-  };
-}
-
-// Update loadProduct to also load reviews and setup review form
-async function loadProduct() {
-  const productId = getProductId();
+// On page load
+(async function() {
+  await updateNavbar();
+  setupLogout();
+  const productId = getQueryParam('id');
   if (!productId) {
-    alert('No product ID provided');
-    window.location.href = '/views/index.html';
+    showError('No product ID provided');
     return;
   }
-  try {
-    const response = await getProduct(productId);
-    if (response.success) {
-      renderProduct(response.data);
-      loadReviews(productId);
-      showReviewFormOrLogin();
-      setupReviewForm(productId);
-    } else {
-      alert('Product not found');
-      window.location.href = '/views/index.html';
-    }
-  } catch (error) {
-    console.error('Error loading product:', error);
-    alert('Error loading product. Please try again.');
-  }
-}
-
-// Initialize page
-document.addEventListener('DOMContentLoaded', () => {
-  loadProduct();
-  
-  // Add event listeners
-  const addCartBtn = document.getElementById('addCartBtn');
-  if (addCartBtn) {
-    addCartBtn.addEventListener('click', handleAddToCart);
-  }
-  const buyBtn = document.getElementById('buyBtn');
-  if (buyBtn) {
-    buyBtn.addEventListener('click', handleBuyNow);
-  }
-  updateCartCount();
-});
-
-// Update updateCartCount to not use localStorage for cart
-async function updateCartCount() {
-  const cartCountElem = document.getElementById('cartCount');
-  if (!cartCountElem) return;
-  try {
-    const token = localStorage.getItem('token');
-    const response = await axios.get(`${API_BASE_URL}/cart/count`, {
-      headers: {
-        'Content-Type': 'application/json',
-        ...(token && { 'Authorization': `Bearer ${token}` })
-      }
-    });
-    const data = response.data;
-    if (data.success) {
-      cartCountElem.textContent = data.count;
-    } else {
-      cartCountElem.textContent = '0';
-    }
-  } catch (error) {
-    cartCountElem.textContent = '0';
-  }
-}
-
-// Add CSS for product details
-const style = document.createElement('style');
-style.textContent = `
-  .product-details {
-    margin: 1rem 0;
-    padding: 1rem;
-    background: #f8f9fa;
-    border-radius: 8px;
-  }
-  
-  .detail-item {
-    margin-bottom: 0.5rem;
-    font-size: 0.95rem;
-  }
-  
-  .detail-item strong {
-    color: #333;
-    margin-right: 0.5rem;
-  }
-  
-  .product-pricing {
-    margin: 1rem 0;
-  }
-  
-  .original-price {
-    text-decoration: line-through;
-    color: #999;
-    margin-right: 1rem;
-  }
-  
-  .price {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #047e84;
-  }
-  
-  .buy-btn, .add-cart-btn {
-    margin: 0.5rem;
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1rem;
-    font-weight: bold;
-  }
-  
-  .buy-btn {
-    background: #047e84;
-    color: white;
-  }
-  
-  .buy-btn:hover {
-    background: #036a6f;
-  }
-  
-  .add-cart-btn {
-    background: #28a745;
-    color: white;
-  }
-  
-  .add-cart-btn:hover {
-    background: #218838;
-  }
-`;
-document.head.appendChild(style); 
+  const product = await fetchProductById(productId);
+  renderProductDetails(product);
+  // Placeholder: Review form logic can be added here
+})(); 

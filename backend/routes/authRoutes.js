@@ -5,17 +5,21 @@ const {
   loginUser, 
   getUserProfile, 
   updateUserProfile,
-  getCurrentUser
+  getCurrentUser,
+  logoutUser,
+  sessionStatus
 } = require('../controllers/authController');
-const { protect } = require('../middleware/auth');
+const { protectSession } = require('../middleware/auth');
 
 // Public routes
 router.post('/register', registerUser);
 router.post('/login', loginUser);
+router.post('/logout', logoutUser);
+router.get('/session', sessionStatus);
 
-// Protected routes
-router.get('/me', protect, getCurrentUser);
-router.get('/profile', protect, getUserProfile);
-router.put('/profile', protect, updateUserProfile);
+// Remove or comment out JWT-protected routes
+// router.get('/me', protectSession, getCurrentUser);
+router.get('/profile', protectSession, getUserProfile);
+router.put('/profile', protectSession, updateUserProfile);
 
 module.exports = router; 

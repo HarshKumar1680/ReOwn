@@ -16,8 +16,8 @@ router.get('/:id', getProduct);
 router.get('/category/:category', getProductsByCategory);
 
 // Protected routes (admin only)
-router.post('/', protect, authorize('admin'), createProduct);
-router.put('/:id', protect, authorize('admin'), updateProduct);
-router.delete('/:id', protect, authorize('admin'), deleteProduct);
+// router.post('/', protect, authorize('admin'), createProduct);
+// router.put('/:id', protect, authorize('admin'), updateProduct);
+// router.delete('/:id', protect, authorize('admin'), deleteProduct);
 
 module.exports = router; 

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart Test</title>
+</head>
+<body>
+    <h1>Cart Functionality Test</h1>
+    
+    <div>
+        <h2>Authentication Test</h2>
+        <button onclick="checkAuth()">Check Authentication</button>
+        <div id="authResult"></div>
+    </div>
+    
+    <div>
+        <h2>Cart API Test</h2>
+        <button onclick="testGetCart()">Get Cart</button>
+        <button onclick="testAddToCart()">Add to Cart</button>
+        <button onclick="testGetCartCount()">Get Cart Count</button>
+        <div id="cartResult"></div>
+    </div>
+    
+    <div>
+        <h2>Product Test</h2>
+        <button onclick="testGetProducts()">Get Products</button>
+        <div id="productResult"></div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:5000/api';
+        
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            const result = document.getElementById('authResult');
+            result.innerHTML = `
+                <p><strong>Token exists:</strong> ${token ? 'Yes' : 'No'}</p>
+                <p><strong>Token length:</strong> ${token ? token.length : 0}</p>
+                <p><strong>Token preview:</strong> ${token ? token.substring(0, 20) + '...' : 'None'}</p>
+            `;
+        }
+        
+        async function testGetCart() {
+            const token = localStorage.getItem('token');
+            const result = document.getElementById('cartResult');
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/cart`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                const data = await response.json();
+                result.innerHTML = `
+                    <p><strong>Status:</strong> ${response.status}</p>
+                    <p><strong>Response:</strong> ${JSON.stringify(data, null, 2)}</p>
+                `;
+            } catch (error) {
+                result.innerHTML = `<p><strong>Error:</strong> ${error.message}</p>`;
+            }
+        }
+        
+        async function testAddToCart() {
+            const token = localStorage.getItem('token');
+            const productId = '68724814b26816455ac1a166'; // Use first product ID
+            const result = document.getElementById('cartResult');
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/cart/add`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ productId, quantity: 1 })
+                });
+                
+                const data = await response.json();
+                result.innerHTML = `
+                    <p><strong>Status:</strong> ${response.status}</p>
+                    <p><strong>Response:</strong> ${JSON.stringify(data, null, 2)}</p>
+                `;
+            } catch (error) {
+                result.innerHTML = `<p><strong>Error:</strong> ${error.message}</p>`;
+            }
+        }
+        
+        async function testGetCartCount() {
+            const token = localStorage.getItem('token');
+            const result = document.getElementById('cartResult');
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/cart/count`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                const data = await response.json();
+                result.innerHTML = `
+                    <p><strong>Status:</strong> ${response.status}</p>
+                    <p><strong>Response:</strong> ${JSON.stringify(data, null, 2)}</p>
+                `;
+            } catch (error) {
+                result.innerHTML = `<p><strong>Error:</strong> ${error.message}</p>`;
+            }
+        }
+        
+        async function testGetProducts() {
+            const result = document.getElementById('productResult');
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/products`);
+                const data = await response.json();
+                result.innerHTML = `
+                    <p><strong>Status:</strong> ${response.status}</p>
+                    <p><strong>Products found:</strong> ${data.data ? data.data.length : 0}</p>
+                    <p><strong>First product ID:</strong> ${data.data && data.data[0] ? data.data[0]._id : 'None'}</p>
+                `;
+            } catch (error) {
+                result.innerHTML = `<p><strong>Error:</strong> ${error.message}</p>`;
+            }
+        }
+    </script>
+</body>
+</html> 

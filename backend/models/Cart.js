@@ -18,11 +18,15 @@ cartSchema.pre('save', function(next) {
 
 // Calculate total price
 cartSchema.methods.getTotal = function() {
-  return this.items.reduce((total, item) => total + (item.price * item.quantity), 0);
+  return this.items.reduce((total, item) => {
+    // If item.product is populated, use its price, otherwise use 0
+    const price = item.product && item.product.price ? item.product.price : 0;
+    return total + (price * item.quantity);
+  }, 0);
 };
 
 // Add item to cart
-cartSchema.methods.addItem = function(productId, quantity, price) {
+cartSchema.methods.addItem = function(productId, quantity) {
   const existingItem = this.items.find(item => item.product.toString() === productId.toString());
   
   if (existingItem) {
@@ -30,8 +34,7 @@ cartSchema.methods.addItem = function(productId, quantity, price) {
   } else {
     this.items.push({
       product: productId,
-      quantity: quantity,
-      price: price
+      quantity: quantity
     });
   }
   

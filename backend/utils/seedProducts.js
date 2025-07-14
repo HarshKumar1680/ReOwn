@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 const Product = require('../models/Product');
 require('dotenv').config();
 
-const sampleProducts = [
+const products = [
+  // --- Main Products ---
   {
     name: 'Maxi Skirt',
     description: 'Elegant maxi skirt, perfect for all occasions. Size: M. Free shipping available.',
@@ -170,27 +171,130 @@ const sampleProducts = [
     condition: 'like-new',
     brand: 'Summer Style',
     stock: 4
+  },
+  // --- Accessories ---
+  {
+    name: 'Trendy Bag',
+    image: '/public/images/bag.jpg',
+    category: 'accessories',
+    price: 999,
+    originalPrice: 1499,
+    stock: 10,
+    description: 'A stylish and trendy bag for all occasions.',
+    brand: 'Fashion Brand',
+    condition: 'new',
+    size: 'M',
+    isActive: true
+  },
+  {
+    name: 'Sneakers',
+    image: '/public/images/sneakers.jpg',
+    category: 'accessories',
+    price: 1299,
+    originalPrice: 1799,
+    stock: 15,
+    description: 'Comfortable and fashionable sneakers.',
+    brand: 'Fashion Brand',
+    condition: 'new',
+    size: '8',
+    isActive: true
+  },
+  {
+    name: 'Scarf',
+    image: '/public/images/scarf.jpg',
+    category: 'accessories',
+    price: 499,
+    originalPrice: 899,
+    stock: 20,
+    description: 'Soft and cozy scarf for chilly days.',
+    brand: 'Fashion Brand',
+    condition: 'new',
+    size: 'One Size',
+    isActive: true
+  },
+  {
+    name: 'Hat',
+    image: '/public/images/hat.jpg',
+    category: 'accessories',
+    price: 599,
+    originalPrice: 999,
+    stock: 12,
+    description: 'Stylish hat to complete your look.',
+    brand: 'Fashion Brand',
+    condition: 'new',
+    size: 'One Size',
+    isActive: true
+  },
+  {
+    name: 'Watch',
+    image: '/public/images/watch.jpg',
+    category: 'accessories',
+    price: 1999,
+    originalPrice: 2999,
+    stock: 8,
+    description: 'Elegant watch for every occasion.',
+    brand: 'Fashion Brand',
+    condition: 'new',
+    size: 'One Size',
+    isActive: true
+  },
+  {
+    name: 'Belt',
+    image: '/public/images/belt.jpg',
+    category: 'accessories',
+    price: 399,
+    originalPrice: 699,
+    stock: 18,
+    description: 'Classic belt for a perfect fit.',
+    brand: 'Fashion Brand',
+    condition: 'new',
+    size: 'M',
+    isActive: true
+  },
+  {
+    name: 'Earrings',
+    image: '/public/images/earrings.jpg',
+    category: 'accessories',
+    price: 299,
+    originalPrice: 599,
+    stock: 25,
+    description: 'Beautiful earrings to enhance your style.',
+    brand: 'Fashion Brand',
+    condition: 'new',
+    size: 'One Size',
+    isActive: true
+  },
+  {
+    name: 'Sunglasses',
+    image: '/public/images/sunglasses.jpg',
+    category: 'accessories',
+    price: 799,
+    originalPrice: 1299,
+    stock: 14,
+    description: 'Trendy sunglasses for sunny days.',
+    brand: 'Fashion Brand',
+    condition: 'new',
+    size: 'One Size',
+    isActive: true
   }
 ];
 
-const seedProducts = async () => {
+const seedAllProducts = async () => {
   try {
-    // Connect to MongoDB
-    await mongoose.connect(process.env.MONGODB_URI);
+    await mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://harsh:harsh9999hk@cluster0.5ub14.mongodb.net/reown?retryWrites=true&w=majority&appName=Cluster0', {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    });
     console.log('Connected to MongoDB');
 
-    // Clear existing products
     await Product.deleteMany({});
     console.log('Cleared existing products');
 
-    // Insert sample products
-    const products = await Product.insertMany(sampleProducts);
-    console.log(`Seeded ${products.length} products successfully`);
+    const inserted = await Product.insertMany(products);
+    console.log(`Seeded ${inserted.length} products (including accessories) successfully`);
 
-    // Disconnect from MongoDB
     await mongoose.disconnect();
     console.log('Disconnected from MongoDB');
-    
     process.exit(0);
   } catch (error) {
     console.error('Error seeding products:', error);
@@ -198,5 +302,4 @@ const seedProducts = async () => {
   }
 };
 
-// Run the seed function
-seedProducts(); 
+seedAllProducts(); 

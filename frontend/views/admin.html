@@ -5,35 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Panel - Reown</title>
   <link rel="stylesheet" href="../public/css/style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
-  <header class="main-header">
-    <div class="header-left">
-      <div class="nav-arrows">
-        <button class="arrow-btn" onclick="window.history.back()" title="Back">
-          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-            <path d="M20 8L12 16L20 24" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-        <button class="arrow-btn" onclick="window.history.forward()" title="Forward">
-          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-            <path d="M12 8L20 16L12 24" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-      </div>
-      <div class="logo baseline-logo" style="color: #fff;">Reown</div>
-    </div>
+  <header>
+    <button class="back-btn" onclick="history.back()" style="margin: 1.2rem 0 0 1.5rem; padding: 0.6em 1.2em; border-radius: 24px; border: none; background: #047e84; color: #fff; font-size: 1.1rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; position: absolute; left: 0; top: 0; z-index: 10;"><span style="font-size:1.3em;margin-right:0.5em;">&#8592;</span>Back</button>
     <nav class="navbar">
+      <div class="logo">Reown</div>
       <ul class="nav-links">
         <li><a href="/views/index.html">Home</a></li>
         <li><a href="/views/cart.html">Cart</a></li>
         <li><a href="/views/dashboard.html">Dashboard</a></li>
         <li><a href="/views/admin.html">Admin</a></li>
         <li><a href="/views/contact.html">Contact Us</a></li>
-        <li><a href="/views/login.html">Login</a></li>
-        <li><a href="/views/signup.html">Sign Up</a></li>
+        <li><a href="/views/login.html" id="loginLink">Login</a></li>
+        <li><a href="/views/signup.html" id="signupLink">Sign Up</a></li>
+        <li><a href="#" id="logoutLink" style="display:none;">Logout</a></li>
       </ul>
     </nav>
   </header>

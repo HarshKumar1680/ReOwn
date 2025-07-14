@@ -1,5 +1,25 @@
 const API_BASE_URL = "http://localhost:5000/api";
 const loginForm = document.getElementById('loginForm');
+const logoutBtn = document.getElementById('logoutBtn');
+
+// Check session status on page load
+window.addEventListener('DOMContentLoaded', async () => {
+  try {
+    const res = await fetch(`${API_BASE_URL}/auth/session`, { credentials: 'include' });
+    const data = await res.json();
+    if (data.loggedIn) {
+      loginForm.style.display = 'none';
+      if (logoutBtn) logoutBtn.style.display = 'block';
+    } else {
+      loginForm.style.display = 'block';
+      if (logoutBtn) logoutBtn.style.display = 'none';
+    }
+  } catch (err) {
+    // fallback: show login
+    loginForm.style.display = 'block';
+    if (logoutBtn) logoutBtn.style.display = 'none';
+  }
+});
 
 loginForm.addEventListener('submit', async function(e) {
   e.preventDefault();
@@ -10,13 +30,17 @@ loginForm.addEventListener('submit', async function(e) {
     return;
   }
   try {
-    const res = await axios.post(`${API_BASE_URL}/auth/login`, { email, password });
-    const data = res.data;
-    console.log('Login response:', data);
-    if (data.token) {
-      localStorage.setItem('token', data.token);
+    const res = await fetch(`${API_BASE_URL}/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ email, password })
+    });
+    const data = await res.json();
+    if (res.ok && data.success) {
       alert('Login successful!');
-      if (data.role === 'admin') {
+      // Redirect based on user role
+      if (data.user && data.user.role === 'admin') {
         window.location.href = '/views/admin.html';
       } else {
         window.location.href = '/views/index.html';
@@ -25,10 +49,20 @@ loginForm.addEventListener('submit', async function(e) {
       alert(data.message || 'Login failed');
     }
   } catch (err) {
-    if (err.response && err.response.data && err.response.data.message) {
-      alert(err.response.data.message);
-    } else {
-      alert('Error connecting to server.');
-    }
+    alert('Error connecting to server.');
   }
-}); 
+});
+
+if (logoutBtn) {
+  logoutBtn.addEventListener('click', async () => {
+    try {
+      await fetch(`${API_BASE_URL}/auth/logout`, {
+        method: 'POST',
+        credentials: 'include'
+      });
+      window.location.reload();
+    } catch (err) {
+      alert('Logout failed.');
+    }
+  });
+} 
