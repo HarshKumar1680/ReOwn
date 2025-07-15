@@ -6,7 +6,8 @@ const {
   getMyOrders,
   getAllOrders,
   getOrderById,
-  updateOrderStatus
+  updateOrderStatus,
+  cancelOrder
 } = require('../controllers/orderController');
 
 // User places an order
@@ -19,5 +20,7 @@ router.get('/', protect, authorize('admin'), getAllOrders);
 router.get('/:id', protect, authorize('user', 'admin'), getOrderById);
 // Admin updates order status
 router.put('/:id/status', protect, authorize('admin'), updateOrderStatus);
+// User cancels their order
+router.put('/:id/cancel', protect, authorize('user', 'admin'), cancelOrder);
 
 module.exports = router; 

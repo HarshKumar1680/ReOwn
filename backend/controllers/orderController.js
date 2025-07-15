@@ -94,10 +94,34 @@ const updateOrderStatus = async (req, res) => {
   }
 };
 
+// Cancel order (user)
+const cancelOrder = async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id);
+    if (!order) return res.status(404).json({ success: false, message: 'Order not found' });
+    // Only allow user to cancel their own order
+    if (order.user.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ success: false, message: 'Not authorized' });
+    }
+    if (order.status === 'cancelled') {
+      return res.status(400).json({ success: false, message: 'Order already cancelled' });
+    }
+    if (order.status === 'delivered') {
+      return res.status(400).json({ success: false, message: 'Delivered orders cannot be cancelled' });
+    }
+    order.status = 'cancelled';
+    await order.save();
+    res.json({ success: true, data: order });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Error cancelling order' });
+  }
+};
+
 module.exports = {
   createOrder,
   getMyOrders,
   getAllOrders,
   getOrderById,
-  updateOrderStatus
+  updateOrderStatus,
+  cancelOrder
 }; 

@@ -161,19 +161,52 @@ function renderDashboardOrders(orders) {
     return;
   }
   let html = `<table style="width:100%;border-collapse:collapse;">
-    <thead><tr style="background:#f5f5f5;"><th>Date</th><th>Status</th><th>Total</th><th>Details</th></tr></thead><tbody>`;
+    <thead><tr style="background:#f5f5f5;"><th>Date</th><th>Status</th><th>Total</th><th>Details</th><th>Cancel</th></tr></thead><tbody>`;
   orders.forEach(order => {
     html += `<tr>
       <td>${new Date(order.createdAt).toLocaleString()}</td>
       <td>${order.status}</td>
       <td>₹${order.totalPrice}</td>
-      <td><button class="cta-btn" data-id="${order._id}">Details</button></td>
-    </tr>`;
+      <td><button class="cta-btn" data-id="${order._id}">Details</button></td>`;
+    if (order.status !== 'cancelled' && order.status !== 'delivered') {
+      html += `<td><button class="cancel-btn" data-cancel-id="${order._id}">Cancel</button></td>`;
+    } else {
+      html += `<td>-</td>`;
+    }
+    html += `</tr>`;
   });
   html += '</tbody></table>';
   dashboardOrdersTableDiv.innerHTML = html;
   dashboardOrdersTableDiv.querySelectorAll('button[data-id]').forEach(btn => {
     btn.onclick = () => showDashboardOrderDetails(btn.getAttribute('data-id'));
+  });
+  dashboardOrdersTableDiv.querySelectorAll('button[data-cancel-id]').forEach(btn => {
+    btn.onclick = async () => {
+      const orderId = btn.getAttribute('data-cancel-id');
+      if (!confirm('Are you sure you want to cancel this order?')) return;
+      btn.disabled = true;
+      btn.textContent = 'Cancelling...';
+      try {
+        const res = await fetch(`${API_BASE_URL}/orders/${orderId}/cancel`, {
+          method: 'PUT',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' }
+        });
+        const data = await res.json();
+        if (data.success) {
+          alert('Order cancelled successfully.');
+          fetchUserOrders().then(renderDashboardOrders);
+        } else {
+          alert(data.message || 'Failed to cancel order.');
+          btn.disabled = false;
+          btn.textContent = 'Cancel';
+        }
+      } catch (err) {
+        alert('Error cancelling order.');
+        btn.disabled = false;
+        btn.textContent = 'Cancel';
+      }
+    };
   });
 }
 

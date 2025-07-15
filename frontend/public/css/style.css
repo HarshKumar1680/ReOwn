@@ -2278,3 +2278,17 @@ footer {
 .close:hover {
   color: #000;
 }
+.cancel-btn {
+  background: #e53935;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 18px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+.cancel-btn:hover {
+  background: #b71c1c;
+}

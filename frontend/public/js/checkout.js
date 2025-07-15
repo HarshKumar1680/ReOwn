@@ -165,14 +165,14 @@ const closeModalBtn = document.getElementById('closeModal');
 if (closeModalBtn) {
   closeModalBtn.onclick = function() {
     document.getElementById('orderModal').style.display = 'none';
-    window.location.href = '/views/orders.html';
+    window.location.href = '/views/dashboard.html';
   };
 }
 window.onclick = function(event) {
   const modal = document.getElementById('orderModal');
   if (event.target === modal) {
     modal.style.display = 'none';
-    window.location.href = '/views/orders.html';
+    window.location.href = '/views/dashboard.html';
   }
 };
 
