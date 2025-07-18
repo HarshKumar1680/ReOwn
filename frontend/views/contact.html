@@ -23,21 +23,29 @@
       </ul>
     </nav>
   </header>
-  <main class="fade-in" style="display:flex;align-items:center;justify-content:center;min-height:80vh;background:linear-gradient(135deg,#e0f7fa 0%,#fff1fd 100%);">
-    <section class="contact-section" style="width:100%;max-width:420px;">
-      <div style="background:#fff;border-radius:18px;box-shadow:0 8px 32px rgba(60,72,100,0.13);padding:2.2em 2em 1.5em 2em;border:2px solid #e0f7fa;position:relative;">
-        <h1 style="text-align:center;margin-bottom:1.2em;letter-spacing:1px;">✉️ Contact Us</h1>
-        <form id="contactForm" style="display:flex;flex-direction:column;gap:1.1em;">
-          <input type="text" name="name" placeholder="Your Name" required>
-          <input type="email" name="email" placeholder="Your Email" required>
-          <textarea name="message" placeholder="Your Message" required style="min-height:90px;"></textarea>
-          <button type="submit" class="btn-animate" style="background:#4ecdc4;font-size:1.1em;padding:0.8em 0;margin-top:0.5em;">Send Message 📤</button>
-        </form>
-        <div class="thank-you-msg" id="thankYouMsg" style="display:none;margin-top:1.2em;background:#e6f9f0;color:#2e7d32;padding:1em 1.2em;border-radius:10px;text-align:center;font-weight:600;font-size:1.1em;box-shadow:0 2px 8px rgba(44,62,80,0.07);"><span style="font-size:1.5em;margin-right:0.3em;">✅</span>Thank you for reaching out! We'll get back to you soon.</div>
-        <div class="contact-info" style="margin-top:2em;font-size:1em;color:#047e84;">
+  <main class="fade-in contact-main">
+    <section class="contact-section">
+      <div class="contact-card">
+        <div class="contact-content">
+          <div class="contact-illustration">
+            <img src="../public/images/contact-illustration.svg" alt="Contact Us" style="width:120px;height:120px;display:block;margin:0 auto 1.2em auto;">
+          </div>
+          <h1 class="contact-title">✉️ Contact Us</h1>
+          <form id="contactForm" class="contact-form">
+            <input type="text" name="name" placeholder="Your Name" required>
+            <input type="email" name="email" placeholder="Your Email" required>
+            <textarea name="message" placeholder="Your Message" required></textarea>
+            <button type="submit" class="btn-animate contact-btn">Send Message 📤</button>
+          </form>
+          <div class="thank-you-msg" id="thankYouMsg">
+            <span>✅</span>Thank you for reaching out! We'll get back to you soon.
+          </div>
+        </div>
+        <div class="contact-info">
+          <h2>Contact Info</h2>
           <div><b>Email:</b> support@reown.com</div>
           <div><b>Phone:</b> +91 98765 43210</div>
-          <div><b>Address:</b> Jattari, Aligarh, Uttarpradedsh, India</div>
+          <div><b>Address:</b> Jattari, Aligarh, Uttar Pradesh, India</div>
         </div>
       </div>
     </section>
