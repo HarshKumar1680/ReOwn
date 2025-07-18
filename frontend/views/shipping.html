@@ -6,36 +6,58 @@
   <link rel="stylesheet" href="../public/css/style.css">
   <link rel="icon" type="image/x-icon" href="../public/favicon.ico">
 </head>
-<body>
+<body style="background: linear-gradient(135deg, #e0f7fa 0%, #fff1fd 100%); min-height:100vh;">
   <header>
     <nav class="navbar">
-      <div class="logo">Reown</div>
+      <div class="logo logo-bounce">Reown 🚚</div>
       <ul class="nav-links">
-        <li><a href="/views/index.html">Home</a></li>
-        <li><a href="/views/cart.html">Cart</a></li>
-        <li><a href="/views/dashboard.html">Dashboard</a></li>
-        <li><a href="/views/admin.html">Admin</a></li>
-        <li><a href="/views/contact.html">Contact Us</a></li>
-        <li><a href="/views/login.html" id="loginLink">Login</a></li>
-        <li><a href="/views/signup.html" id="signupLink">Sign Up</a></li>
-        <li><a href="#" id="logoutLink" class="logout-red" style="display:none;">Logout</a></li>
+        <li><a href="/views/index.html" class="wiggle-on-hover">🏠 Home</a></li>
+        <li><a href="/views/cart.html" class="wiggle-on-hover">🛒 Cart</a></li>
+        <li><a href="/views/dashboard.html" class="wiggle-on-hover">📋 Dashboard</a></li>
+        <li><a href="/views/admin.html" class="wiggle-on-hover">🛠️ Admin</a></li>
+        <li><a href="/views/contact.html" class="wiggle-on-hover">✉️ Contact</a></li>
+        <li><a href="/views/login.html" id="loginLink" class="wiggle-on-hover">🔒 Login</a></li>
+        <li><a href="/views/signup.html" id="signupLink" class="wiggle-on-hover">📝 Sign Up</a></li>
+        <li><a href="#" id="logoutLink" class="logout-red wiggle-on-hover" style="display:none;">🚪 Logout</a></li>
       </ul>
     </nav>
   </header>
-  <main style="max-width:500px;margin:2rem auto;padding:2rem;background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.07);">
-    <h2>Shipping Address</h2>
-    <form id="shippingForm">
-      <label>Full Name:<br><input type="text" id="shipFullName" required></label><br>
-      <label>Address:<br><input type="text" id="shipAddress" required></label><br>
-      <label>City:<br><input type="text" id="shipCity" required></label><br>
-      <label>Postal Code:<br><input type="text" id="shipPostalCode" required></label><br>
-      <label>Country:<br><input type="text" id="shipCountry" required></label><br>
-      <label>Phone:<br><input type="text" id="shipPhone"></label><br>
-      <div style="margin-top:1em;display:flex;gap:1em;justify-content:flex-end;">
-        <button type="button" class="cta-btn" id="cancelShippingBtn" style="background:#888;" onclick="window.location.href='/views/cart.html'">Cancel</button>
-        <button type="submit" class="cta-btn">Continue to Checkout</button>
+  <main class="fade-in" style="display:flex;align-items:center;justify-content:center;min-height:80vh;">
+    <div style="width:100%;max-width:440px;">
+      <div style="margin-bottom:1.5em;text-align:center;">
+        <div style="font-size:1.1em;color:#047e84;font-weight:600;letter-spacing:1px;">Step 1 of 3: Shipping</div>
+        <div style="height:6px;width:80%;margin:0.5em auto 0 auto;background:#e0f7fa;border-radius:4px;overflow:hidden;">
+          <div style="width:33%;height:100%;background:#4ecdc4;"></div>
+        </div>
       </div>
-    </form>
+      <div style="background:#fff;border-radius:18px;box-shadow:0 4px 24px rgba(44,62,80,0.10);padding:2.2em 2em 1.5em 2em;border: 2px solid #e0f7fa;position:relative;">
+        <h2 style="text-align:center;margin-bottom:1.2em;letter-spacing:1px;">🚚 Shipping Address</h2>
+        <form id="shippingForm" style="display:flex;flex-direction:column;gap:1.1em;">
+          <label style="font-weight:500;color:#047e84;display:flex;align-items:center;gap:0.5em;">👤 Full Name:
+            <input type="text" id="shipFullName" required style="margin-top:0.3em;">
+          </label>
+          <label style="font-weight:500;color:#047e84;display:flex;align-items:center;gap:0.5em;">🏠 Address:
+            <input type="text" id="shipAddress" required style="margin-top:0.3em;">
+          </label>
+          <label style="font-weight:500;color:#047e84;display:flex;align-items:center;gap:0.5em;">🏙️ City:
+            <input type="text" id="shipCity" required style="margin-top:0.3em;">
+          </label>
+          <label style="font-weight:500;color:#047e84;display:flex;align-items:center;gap:0.5em;">🏷️ Postal Code:
+            <input type="text" id="shipPostalCode" required style="margin-top:0.3em;">
+          </label>
+          <label style="font-weight:500;color:#047e84;display:flex;align-items:center;gap:0.5em;">🌍 Country:
+            <input type="text" id="shipCountry" required style="margin-top:0.3em;">
+          </label>
+          <label style="font-weight:500;color:#047e84;display:flex;align-items:center;gap:0.5em;">📞 Phone:
+            <input type="text" id="shipPhone" style="margin-top:0.3em;">
+          </label>
+          <div style="margin-top:1em;display:flex;gap:1em;justify-content:flex-end;">
+            <button type="button" class="cta-btn btn-animate" id="cancelShippingBtn" style="background:#888;" onclick="window.location.href='/views/cart.html'">Cancel</button>
+            <button type="submit" class="cta-btn btn-animate" style="background:#4ecdc4;">Continue to Checkout 🚀</button>
+          </div>
+        </form>
+      </div>
+    </div>
   </main>
   <script src="../public/js/shipping.js"></script>
 </body>

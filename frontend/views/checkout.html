@@ -2,46 +2,131 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Checkout - Reown</title>
   <link rel="stylesheet" href="../public/css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
   <link rel="icon" type="image/x-icon" href="../public/favicon.ico">
 </head>
-<body>
+<body style="background: linear-gradient(135deg, #e0f7fa 0%, #fff1fd 100%); min-height:100vh;">
   <header>
     <nav class="navbar">
-      <div class="logo">Reown</div>
+      <div class="logo logo-bounce">Reown 🛍️</div>
       <ul class="nav-links">
-        <li><a href="/views/index.html">Home</a></li>
-        <li><a href="/views/cart.html">Cart</a></li>
-        <li><a href="/views/dashboard.html">Dashboard</a></li>
-        <li><a href="/views/admin.html">Admin</a></li>
-        <li><a href="/views/contact.html">Contact Us</a></li>
-        <li><a href="/views/login.html" id="loginLink">Login</a></li>
-        <li><a href="/views/signup.html" id="signupLink">Sign Up</a></li>
-        <li><a href="#" id="logoutLink" class="logout-red" style="display:none;">Logout</a></li>
+        <li><a href="/views/index.html" class="wiggle-on-hover">🏠 Home</a></li>
+        <li><a href="/views/cart.html" class="wiggle-on-hover">🛒 Cart</a></li>
+        <li><a href="/views/dashboard.html" class="wiggle-on-hover">📋 Dashboard</a></li>
+        <li><a href="/views/admin.html" class="wiggle-on-hover">🛠️ Admin</a></li>
+        <li><a href="/views/contact.html" class="wiggle-on-hover">✉️ Contact</a></li>
+        <li><a href="/views/login.html" id="loginLink" class="wiggle-on-hover">🔒 Login</a></li>
+        <li><a href="/views/signup.html" id="signupLink" class="wiggle-on-hover">📝 Sign Up</a></li>
+        <li><a href="#" id="logoutLink" class="logout-red wiggle-on-hover" style="display:none;">🚪 Logout</a></li>
       </ul>
     </nav>
   </header>
-  <main style="max-width:900px;margin:2rem auto;padding:2rem;background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.07);">
-    <h2>Checkout</h2>
-    <div id="checkoutSummary">
-      <!-- Cart summary will be rendered here by JS -->
-    </div>
-    <form id="checkoutForm" style="margin-top:2em;">
-      <!-- Shipping address fields removed; address is taken from localStorage -->
-      <div style="margin-top:1em;display:flex;gap:1em;justify-content:flex-end;">
-        <button type="button" class="cta-btn" id="cancelCheckoutBtn" style="background:#888;" onclick="window.location.href='/views/cart.html'">Cancel</button>
-        <button type="submit" class="cta-btn">Place Order</button>
+  <main style="flex:1;display:flex;align-items:center;justify-content:center;min-height:80vh;" class="fade-in">
+    <div style="width:100%;max-width:440px;">
+      <div style="margin-bottom:1.5em;text-align:center;">
+        <div style="font-size:1.1em;color:#047e84;font-weight:600;letter-spacing:1px;">Step 2 of 3: Review & Place Order</div>
+        <div style="height:6px;width:80%;margin:0.5em auto 0 auto;background:#e0f7fa;border-radius:4px;overflow:hidden;">
+          <div style="width:66%;height:100%;background:#4ecdc4;"></div>
+        </div>
       </div>
-    </form>
+      <div class="payment-card" style="animation: fade-in 1.2s cubic-bezier(.36,.07,.19,.97);padding:2.2em 2em 1.5em 2em;">
+        <h2 style="text-align:center;margin-bottom:1.2em;letter-spacing:1px;">🛍️ Checkout</h2>
+        <div id="checkoutSummary" style="background:#f5f7fa;border-radius:10px;padding:1.2em 1em;margin-bottom:1.2em;box-shadow:0 2px 8px rgba(44,62,80,0.07);">
+          <!-- Cart summary will be rendered here by JS -->
+        </div>
+        <form id="checkoutForm" style="margin-top:2em;">
+          <div style="margin-top:1em;display:flex;gap:1em;justify-content:flex-end;">
+            <button type="button" class="cta-btn btn-animate" id="cancelCheckoutBtn" style="background:#888;" onclick="window.location.href='/views/cart.html'">Cancel</button>
+            <button type="submit" class="cta-btn btn-animate" style="background:#4ecdc4;">Place Order 🎉</button>
+          </div>
+        </form>
+      </div>
+    </div>
   </main>
   <!-- Order Confirmation Modal -->
   <div id="orderModal" class="modal" style="display:none;">
-    <div class="modal-content">
+    <div class="modal-content" style="text-align:center;">
       <span class="close" id="closeModal">&times;</span>
-      <p id="orderModalMessage">Order placed successfully!</p>
+      <div style="font-size:3em;color:#4ecdc4;margin-bottom:0.5em;">✔️</div>
+      <p id="orderModalMessage" style="font-size:1.2em;font-weight:600;">Order placed successfully!</p>
     </div>
   </div>
+  <footer>
+    <hr class="footer-separator" />
+    <div class="footer-content">
+      <div class="footer-main-section">
+        <div class="footer-columns">
+          <div class="footer-col">
+            <div class="footer-title">THE COMPANY</div>
+            <a href="#">About Us</a>
+            <a href="#">Blog</a>
+            <a href="#">Resale Report</a>
+            <a href="#">Our Impact</a>
+            <a href="#">Careers</a>
+            <a href="#">Resale-as-a-Service</a>
+            <a href="#">Newsroom</a>
+            <a href="#">Investors</a>
+            <a href="#">FAQ</a>
+            <a href="#">Return Policy</a>
+          </div>
+          <div class="footer-col">
+            <div class="footer-title">DEPARTMENTS</div>
+            <a href="#">Women</a>
+            <a href="#">Kids</a>
+            <a href="#">Juniors</a>
+            <a href="#">Designer</a>
+            <a href="#">Maternity</a>
+            <a href="#">Plus</a>
+            <a href="#">Shoes</a>
+            <a href="#">Handbags</a>
+            <a href="#">Accessories</a>
+            <a href="#">Sale</a>
+          </div>
+          <div class="footer-col">
+            <div class="footer-title">TOP BRANDS</div>
+            <a href="#">J.Crew</a>
+            <a href="#">Ann Taylor LOFT</a>
+            <a href="#">Banana Republic</a>
+            <a href="#">BCBGMAXAZRIA</a>
+            <a href="#">Lululemon Athletica</a>
+            <a href="#">Talbots</a>
+            <a href="#">Free people</a>
+            <a href="#">Lilly Pulitzer</a>
+            <a href="#">Madewell</a>
+            <a href="#">Shop All Brands</a>
+          </div>
+          <div class="footer-col">
+            <div class="footer-title">DISCOVER</div>
+            <a href="#">Rescues</a>
+            <a href="#">Size Guide</a>
+            <a href="#">EChOCloset Rewards</a>
+            <a href="#">Gift Cards</a>
+          </div>
+          <div class="footer-col">
+            <div class="footer-title">SELL WITH US</div>
+            <a href="#">Order a Bag</a>
+            <a href="#">Reselling Guide</a>
+            <a href="#">All About Earnings</a>
+          </div>
+        </div>
+      </div>
+      <hr class="footer-separator" />
+      <div class="footer-bottom-section">
+        <div class="footer-bottom">
+          <div class="social-links">
+            <a href="#">Instagram</a> |
+            <a href="#">Facebook</a> |
+          </div>
+          <a href="/views/contact.html" class="footer-contact-link">Contact Us</a>
+          <p>&copy; 2025 Reown. All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
   <script src="../public/js/checkout.js"></script>
 </body>
 </html> 

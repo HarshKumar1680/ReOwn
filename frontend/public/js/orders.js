@@ -81,7 +81,7 @@ function renderOrders(orders) {
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td style="padding:12px;">${formatDate(order.createdAt)}</td>
-      <td>${order.status}</td>
+      <td>${order.status}<br><span style="font-size:0.9em;color:#555;">Payment: ${order.paymentStatus || 'N/A'}</span></td>
       <td>₹${order.totalPrice}</td>
       <td><button class="cta-btn" data-id="${order._id}">Details</button></td>
     `;
@@ -104,13 +104,13 @@ async function showOrderDetails(orderId) {
     content.innerHTML = `
       <h3>Order Details</h3>
       <div><b>Date:</b> ${formatDate(order.createdAt)}</div>
-      <div><b>Status:</b> ${order.status}</div>
+      <div><b>Status:</b> <span class="status-badge status-${order.status}">${order.status.charAt(0).toUpperCase() + order.status.slice(1)}</span></div>
+      <div><b>Payment Status:</b> ${order.paymentStatus || 'N/A'}</div>
       <div><b>Total:</b> ₹${order.totalPrice}</div>
       <div><b>Shipping:</b> ${order.shippingAddress.fullName}, ${order.shippingAddress.address}, ${order.shippingAddress.city}, ${order.shippingAddress.postalCode}, ${order.shippingAddress.country}${order.shippingAddress.phone ? ', ' + order.shippingAddress.phone : ''}</div>
       <div style="margin-top:1em;"><b>Items:</b></div>
-      <ul style="margin:0 0 1em 1em;padding:0;">
-        ${order.items.map(item => `<li>${item.quantity} x ${item.product} @ ₹${item.price}</li>`).join('')}
-      </ul>
+      <ul style="margin:0 0 1em 1em;padding:0;">${order.items.map(item => `<li>${item.quantity} x ${item.product && item.product.name ? item.product.name : item.product} @ ₹${item.price}</li>`).join('')}</ul>
+      ${order.paymentProof && order.paymentProof.txnId ? `<div><b>Txn ID:</b> ${order.paymentProof.txnId}</div>` : ''}
     `;
     modal.style.display = 'block';
   } catch (err) {

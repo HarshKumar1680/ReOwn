@@ -83,7 +83,11 @@ async function handleBuyNow(productId) {
 
 function renderProductDetails(product) {
   if (!product || !product.data) {
-    showError('Product not found.');
+    showError('');
+    const container = document.getElementById('productDetailsContainer');
+    if (container) {
+      container.innerHTML = '<div style="text-align:center;padding:2em 0;"><div style="font-size:3em;">🕵️‍♂️</div><div style="font-size:1.2em;font-weight:600;margin:0.5em 0 0.2em 0;">Product not found!</div><div style="color:#888;">Please try another item.</div></div>';
+    }
     return;
   }
   const p = product.data;

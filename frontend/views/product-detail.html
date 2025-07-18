@@ -8,22 +8,46 @@
   <link rel="icon" type="image/x-icon" href="../public/favicon.ico">
 </head>
 <body>
-  <main>
+  <header>
+    <nav class="navbar">
+      <div class="logo logo-bounce">Reown 🛍️</div>
+      <ul class="nav-links">
+        <li><a href="/views/index.html" class="wiggle-on-hover">🏠 Home</a></li>
+        <li><a href="/views/cart.html" class="wiggle-on-hover">🛒 Cart</a></li>
+        <li><a href="/views/dashboard.html" class="wiggle-on-hover">📋 Dashboard</a></li>
+        <li><a href="/views/admin.html" class="wiggle-on-hover">🛠️ Admin</a></li>
+        <li><a href="/views/contact.html" class="wiggle-on-hover">✉️ Contact</a></li>
+        <li><a href="/views/login.html" id="loginLink" class="wiggle-on-hover">🔒 Login</a></li>
+        <li><a href="/views/signup.html" id="signupLink" class="wiggle-on-hover">📝 Sign Up</a></li>
+        <li><a href="#" id="logoutLink" class="logout-red wiggle-on-hover" style="display:none;">🚪 Logout</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main class="fade-in">
     <div class="product-details">
       <div class="product-img-col">
         <img id="productImg" class="product-img" src="" alt="Product Image">
       </div>
       <div class="product-info-col">
-        <h1 id="productName">Product Name</h1>
+        <h1 id="productName">🛍️ Product Name</h1>
         <div class="product-pricing">
           <span class="price" id="productPrice">₹0</span>
         </div>
+        <ul class="product-meta-list">
+          <li><b>Category:</b> <span id="productCategory">Clothing</span></li>
+          <li><b>Brand:</b> <span id="productBrand">ReOwn</span></li>
+          <li><b>Size:</b> <span id="productSize">M</span></li>
+          <li><b>Condition:</b> <span id="productCondition">Good</span></li>
+          <li><b>Stock:</b> <span id="productStock">1</span></li>
+        </ul>
+        <hr style="margin:1.2rem 0; border:0; border-top:1.5px solid #e0e0e0;">
         <div class="product-detail-desc" id="productDesc">Product description...</div>
         <div id="productDetails"></div>
-        <button class="buy-btn" id="addToCartBtn">Add to Cart</button>
+        <button class="buy-btn btn-animate" id="addToCartBtn">Add to Cart 🛒</button>
       </div>
     </div>
     <section class="product-reviews" id="productReviews">
+      <h3>Product Reviews ⭐</h3>
       <!-- Reviews will be loaded here by JS if implemented -->
     </section>
   </main>

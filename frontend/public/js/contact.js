@@ -42,6 +42,76 @@ function setupLogout() {
   }
 }
 
+// --- Input Icons & Real-time Validation ---
+function validateEmail(email) {
+  return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
+}
+function validateName(name) {
+  return name.length >= 2;
+}
+function validateMessage(msg) {
+  return msg.length >= 5;
+}
+function setupInputIconsAndValidation() {
+  const nameInput = document.getElementById('name');
+  const emailInput = document.getElementById('email');
+  const messageInput = document.getElementById('message');
+  if (nameInput) {
+    nameInput.parentElement.classList.add('input-icon');
+    if (!nameInput.previousElementSibling || !nameInput.previousElementSibling.classList.contains('icon')) {
+      let icon = document.createElement('span');
+      icon.className = 'icon';
+      icon.textContent = '👤';
+      nameInput.parentElement.insertBefore(icon, nameInput);
+    }
+    nameInput.addEventListener('input', () => {
+      if (validateName(nameInput.value)) {
+        nameInput.classList.add('valid');
+        nameInput.classList.remove('invalid');
+      } else {
+        nameInput.classList.remove('valid');
+        nameInput.classList.add('invalid');
+      }
+    });
+  }
+  if (emailInput) {
+    emailInput.parentElement.classList.add('input-icon');
+    if (!emailInput.previousElementSibling || !emailInput.previousElementSibling.classList.contains('icon')) {
+      let icon = document.createElement('span');
+      icon.className = 'icon';
+      icon.textContent = '📧';
+      emailInput.parentElement.insertBefore(icon, emailInput);
+    }
+    emailInput.addEventListener('input', () => {
+      if (validateEmail(emailInput.value)) {
+        emailInput.classList.add('valid');
+        emailInput.classList.remove('invalid');
+      } else {
+        emailInput.classList.remove('valid');
+        emailInput.classList.add('invalid');
+      }
+    });
+  }
+  if (messageInput) {
+    messageInput.parentElement.classList.add('input-icon');
+    if (!messageInput.previousElementSibling || !messageInput.previousElementSibling.classList.contains('icon')) {
+      let icon = document.createElement('span');
+      icon.className = 'icon';
+      icon.textContent = '💬';
+      messageInput.parentElement.insertBefore(icon, messageInput);
+    }
+    messageInput.addEventListener('input', () => {
+      if (validateMessage(messageInput.value)) {
+        messageInput.classList.add('valid');
+        messageInput.classList.remove('invalid');
+      } else {
+        messageInput.classList.remove('valid');
+        messageInput.classList.add('invalid');
+      }
+    });
+  }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
   const contactForm = document.getElementById('contactForm');
   const thankYouMsg = document.getElementById('thankYouMsg');
@@ -67,6 +137,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     };
   }
+  setupInputIconsAndValidation();
 });
 
 // On page load

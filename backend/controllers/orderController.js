@@ -5,12 +5,18 @@ const Product = require('../models/Product');
 const createOrder = async (req, res) => {
   try {
     const userId = req.user._id;
-    const { items, shippingAddress } = req.body;
+    const { items, shippingAddress, totalPrice, paymentProof, paymentStatus } = req.body;
     if (!items || !Array.isArray(items) || items.length === 0) {
       return res.status(400).json({ success: false, message: 'No items in order.' });
     }
+    if (!shippingAddress) {
+      return res.status(400).json({ success: false, message: 'Shipping address required.' });
+    }
+    if (!paymentProof || !paymentProof.txnId) {
+      return res.status(400).json({ success: false, message: 'Payment proof (transaction ID) required.' });
+    }
     // Calculate total and check stock
-    let totalPrice = 0;
+    let calcTotal = 0;
     for (const item of items) {
       const product = await Product.findById(item.product);
       if (!product || !product.isActive) {
@@ -19,18 +25,26 @@ const createOrder = async (req, res) => {
       if (product.stock < item.quantity) {
         return res.status(400).json({ success: false, message: `Insufficient stock for ${product.name}` });
       }
-      totalPrice += product.price * item.quantity;
+      calcTotal += product.price * item.quantity;
+    }
+    if (Number(totalPrice) !== calcTotal) {
+      return res.status(400).json({ success: false, message: 'Total price mismatch.' });
     }
     // Deduct stock
     for (const item of items) {
       await Product.findByIdAndUpdate(item.product, { $inc: { stock: -item.quantity } });
     }
-    // Create order
+    // Create order with payment proof
     const order = await Order.create({
       user: userId,
       items,
       shippingAddress,
-      totalPrice
+      totalPrice: calcTotal,
+      paymentStatus: paymentStatus === 'awaiting_verification' ? 'awaiting_verification' : 'awaiting_verification',
+      paymentProof: {
+        txnId: paymentProof.txnId,
+        submittedAt: new Date()
+      }
     });
     res.status(201).json({ success: true, data: order });
   } catch (error) {
@@ -117,11 +131,36 @@ const cancelOrder = async (req, res) => {
   }
 };
 
+// Admin: verify payment (mark as paid or failed)
+const verifyPayment = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { action } = req.body; // 'paid' or 'failed'
+    const order = await Order.findById(id);
+    if (!order) return res.status(404).json({ success: false, message: 'Order not found' });
+    if (order.paymentStatus !== 'awaiting_verification') {
+      return res.status(400).json({ success: false, message: 'Order is not awaiting payment verification' });
+    }
+    if (action === 'paid') {
+      order.paymentStatus = 'paid';
+    } else if (action === 'failed') {
+      order.paymentStatus = 'failed';
+    } else {
+      return res.status(400).json({ success: false, message: 'Invalid action' });
+    }
+    await order.save();
+    res.json({ success: true, data: order });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Error verifying payment' });
+  }
+};
+
 module.exports = {
   createOrder,
   getMyOrders,
   getAllOrders,
   getOrderById,
   updateOrderStatus,
-  cancelOrder
+  cancelOrder,
+  verifyPayment
 }; 

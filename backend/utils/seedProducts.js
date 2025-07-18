@@ -302,4 +302,45 @@ const seedAllProducts = async () => {
   }
 };
 
-seedAllProducts(); 
+seedAllProducts();
+
+// --- Add this utility to update missing fields in all products ---
+const addMissingFieldsToExistingProducts = async () => {
+  try {
+    await mongoose.connect(process.env.MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    });
+    console.log('Connected to MongoDB for updating missing fields');
+
+    const update = await Product.updateMany(
+      {
+        $or: [
+          { brand: { $exists: false } },
+          { condition: { $exists: false } },
+          { size: { $exists: false } },
+          { stock: { $exists: false } },
+          { category: { $exists: false } }
+        ]
+      },
+      {
+        $set: {
+          brand: 'ReOwn',
+          condition: 'good',
+          size: 'M',
+          stock: 1,
+          category: 'clothing'
+        }
+      }
+    );
+    console.log('Updated products with missing fields:', update.modifiedCount);
+    await mongoose.disconnect();
+    console.log('Disconnected from MongoDB after updating missing fields');
+  } catch (err) {
+    console.error('Error updating missing fields:', err);
+  }
+};
+
+// Uncomment the following line to run the update utility:
+// addMissingFieldsToExistingProducts();
+// --- End utility --- 

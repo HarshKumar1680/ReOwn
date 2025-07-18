@@ -12,69 +12,75 @@
 </head>
 
 <body>
+  <a href="#mainContent" class="skip-link" tabindex="0">Skip to main content</a>
   <header>
     <nav class="navbar">
-      <div class="logo">Reown</div>
-      <ul class="nav-links">
-        <li><a href="/views/index.html">Home</a></li>
-        <li><a href="/views/cart.html">Cart</a></li>
-        <li><a href="/views/dashboard.html">Dashboard</a></li>
-        <li><a href="/views/admin.html">Admin</a></li>
-        <li><a href="/views/contact.html">Contact Us</a></li>
-        <li><a href="/views/login.html" id="loginLink">Login</a></li>
-        <li><a href="/views/signup.html" id="signupLink">Sign Up</a></li>
-        <li><a href="#" id="logoutLink" class="logout-red" style="display:none;">Logout</a></li>
+      <div class="logo logo-bounce">Reown 🛍️</div>
+      <div class="hamburger" id="hamburgerMenu" tabindex="0" aria-label="Open navigation" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/views/index.html" class="wiggle-on-hover active">🏠 Home</a></li>
+        <li><a href="/views/cart.html" class="wiggle-on-hover">🛒 Cart</a></li>
+        <li><a href="/views/dashboard.html" class="wiggle-on-hover">📋 Dashboard</a></li>
+        <li><a href="/views/admin.html" class="wiggle-on-hover">🛠️ Admin</a></li>
+        <li><a href="/views/contact.html" class="wiggle-on-hover">✉️ Contact</a></li>
+        <li><a href="/views/login.html" id="loginLink" class="wiggle-on-hover">🔒 Login</a></li>
+        <li><a href="/views/signup.html" id="signupLink" class="wiggle-on-hover">📝 Sign Up</a></li>
+        <li><a href="#" id="logoutLink" class="logout-red wiggle-on-hover" style="display:none;">🚪 Logout</a></li>
       </ul>
     </nav>
   </header>
 
-  <section class="css-slide-carousel">
+  <section class="css-slide-carousel fade-in">
     <div class="slide-carousel-track">
       <div class="slide-carousel-slide">
-        <img src="../public/images/slide11.jpg" alt="Banner 1" class="slide-carousel-img">
+        <img src="../public/images/slide11.jpg" alt="Fall arrivals banner" class="slide-carousel-img">
         <div class="slide-carousel-overlay">
-          <h1 class="slide-carousel-heading">Thrift Fall Arrivals</h1>
+          <h1 class="slide-carousel-heading">Thrift Fall Arrivals 🍂</h1>
           <p class="slide-carousel-subheading">Thousands of new arrivals drop daily. Up to 60% off est. retail.</p>
           <a href="#products-section" class="carousel-shop-btn">Shop Now</a>
         </div>
       </div>
       <div class="slide-carousel-slide">
-        <img src="../public/images/slide2.jpg" alt="Banner 2" class="slide-carousel-img">
+        <img src="../public/images/slide2.jpg" alt="Women's collection banner" class="slide-carousel-img">
         <div class="slide-carousel-overlay">
-          <h1 class="slide-carousel-heading">Women's Collection</h1>
+          <h1 class="slide-carousel-heading">Women's Collection 👗</h1>
           <p class="slide-carousel-subheading">Explore the latest trends and timeless classics for every woman.</p>
           <a href="#products-section" class="carousel-shop-btn">Shop Now</a>
         </div>
       </div>
       <div class="slide-carousel-slide">
-        <img src="../public/images/slide3.jpg" alt="Banner 3" class="slide-carousel-img">
+        <img src="../public/images/slide3.jpg" alt="Accessories banner" class="slide-carousel-img">
         <div class="slide-carousel-overlay">
-          <h1 class="slide-carousel-heading">Accessories Galore</h1>
+          <h1 class="slide-carousel-heading">Accessories Galore 💍</h1>
           <p class="slide-carousel-subheading">Bags, jewelry, scarves, and more to complete your look.</p>
           <a href="#products-section" class="carousel-shop-btn">Shop Now</a>
         </div>
       </div>
       <div class="slide-carousel-slide">
-        <img src="../public/images/slide4.jpg" alt="Banner 4" class="slide-carousel-img">
+        <img src="../public/images/slide4.jpg" alt="Best deals banner" class="slide-carousel-img">
         <div class="slide-carousel-overlay">
-          <h1 class="slide-carousel-heading">Best Deals</h1>
+          <h1 class="slide-carousel-heading">Best Deals 💸</h1>
           <p class="slide-carousel-subheading">Unbeatable prices on top brands and must-have items.</p>
           <a href="#products-section" class="carousel-shop-btn">Shop Now</a>
         </div>
       </div>
       <div class="slide-carousel-slide">
-        <img src="../public/images/slide5.jpg" alt="Banner 5" class="slide-carousel-img">
+        <img src="../public/images/slide5.jpg" alt="Summer fashion banner" class="slide-carousel-img">
         <div class="slide-carousel-overlay">
-          <h1 class="slide-carousel-heading">Summer Fashion</h1>
+          <h1 class="slide-carousel-heading">Summer Fashion ☀️</h1>
           <p class="slide-carousel-subheading">Stay cool and stylish with our summer-ready collection.</p>
           <a href="#products-section" class="carousel-shop-btn">Shop Now</a>
         </div>
       </div>
 
       <div class="slide-carousel-slide">
-        <img src="../public/images/slide11.jpg" alt="Banner 1" class="slide-carousel-img">
+        <img src="../public/images/slide11.jpg" alt="Fall arrivals banner" class="slide-carousel-img">
         <div class="slide-carousel-overlay">
-          <h1 class="slide-carousel-heading">Thrift Fall Arrivals</h1>
+          <h1 class="slide-carousel-heading">Thrift Fall Arrivals 🍂</h1>
           <p class="slide-carousel-subheading">Thousands of new arrivals drop daily. Up to 60% off est. retail.</p>
           <a href="#products-section" class="carousel-shop-btn">Shop Now</a>
         </div>
@@ -82,44 +88,44 @@
     </div>
   </section>
 
-  <div class="hero-below-text">
-    <span class="big">Fall freshness, always up to 60% off est. retail</span>
+  <div class="hero-below-text fade-in">
+    <span class="big">🍁 Fall freshness, always up to 60% off est. retail</span>
   </div>
 
 
-  <section class="products-section" id="products-section">
+  <section class="products-section fade-in" id="products-section">
     <div id="productCardsContainer" class="product-cards two-rows"></div>
     <div class="below-products-text">
-      <div class="big">Fall closet essentials</div>
+      <div class="big">🧥 Fall closet essentials</div>
       <div class="small">Your best fall closet is just one thrift spree away. Save on must-have essentials.</div>
     </div>
   </section>
 
-  <section class="categories-section">
+  <section class="categories-section fade-in">
     <div id="categoryCardsContainer" class="category-cards"></div>
   </section>
 
-  <div class="more-products-section">
-    <h2 id="moreProductsHeading" style="text-align:center; margin-top:2rem;">More Products & Accessories</h2>
+  <div class="more-products-section fade-in">
+    <h2 id="moreProductsHeading" style="text-align:center; margin-top:2rem;">🛍️ More Products & Accessories</h2>
     <div id="extraProductCardsContainer" class="extra-product-cards"></div>
   </div>
 
   <!-- Top Brands Section -->
-  <div class="top-brands-section">
-    <h3>Top Brands</h3>
+  <div class="top-brands-section fade-in">
+    <h3>Top Brands ⭐</h3>
     <div class="brands-row">
-      <img src="../public/images/brand1.png" alt="Brand 1">
-      <img src="../public/images/brand2.png" alt="Brand 2">
-      <img src="../public/images/brand3.png" alt="Brand 3">
-      <img src="../public/images/brand4.png" alt="Brand 4">
-      <img src="../public/images/brand5.png" alt="Brand 5">
-      <img src="../public/images/brand6.png" alt="Brand 6">
+      <img src="../public/images/brand1.png" alt="Brand 1 logo">
+      <img src="../public/images/brand2.png" alt="Brand 2 logo">
+      <img src="../public/images/brand3.png" alt="Brand 3 logo">
+      <img src="../public/images/brand4.png" alt="Brand 4 logo">
+      <img src="../public/images/brand5.png" alt="Brand 5 logo">
+      <img src="../public/images/brand6.png" alt="Brand 6 logo">
     </div>
   </div>
 
   <!-- Separator Section -->
-  <div class="footer-sep">
-    <div class="footer-sep-title"><b>Discover one of the world's largest online consignment & thrift stores.</b></div>
+  <div class="footer-sep fade-in">
+    <div class="footer-sep-title"><b>🌎 Discover one of the world's largest online consignment & thrift stores.</b></div>
     <div class="footer-sep-desc">As one of the world's largest online resale platforms for women's and kids' apparel,
       shoes, and accessories, our mission is to inspire a new generation of shoppers to think secondhand clothes first.
       You can shop like-new and used women's clothes and kids' clothes at up to 90% off estimated retail at our online
@@ -133,7 +139,7 @@
       <div class="footer-main-section">
         <div class="footer-columns">
           <div class="footer-col">
-            <div class="footer-title">THE COMPANY</div>
+            <div class="footer-title">THE COMPANY 🏢</div>
             <a href="#">About Us</a>
             <a href="#">Blog</a>
             <a href="#">Resale Report</a>
@@ -146,7 +152,7 @@
             <a href="#">Return Policy</a>
           </div>
           <div class="footer-col">
-            <div class="footer-title">DEPARTMENTS</div>
+            <div class="footer-title">DEPARTMENTS 🏬</div>
             <a href="#">Women</a>
             <a href="#">Kids</a>
             <a href="#">Juniors</a>
@@ -159,7 +165,7 @@
             <a href="#">Sale</a>
           </div>
           <div class="footer-col">
-            <div class="footer-title">TOP BRANDS</div>
+            <div class="footer-title">TOP BRANDS ⭐</div>
             <a href="#">J.Crew</a>
             <a href="#">Ann Taylor LOFT</a>
             <a href="#">Banana Republic</a>
@@ -172,14 +178,14 @@
             <a href="#">Shop All Brands</a>
           </div>
           <div class="footer-col">
-            <div class="footer-title">DISCOVER</div>
+            <div class="footer-title">DISCOVER 🔎</div>
             <a href="#">Rescues</a>
             <a href="#">Size Guide</a>
             <a href="#">EChOCloset Rewards</a>
             <a href="#">Gift Cards</a>
           </div>
           <div class="footer-col">
-            <div class="footer-title">SELL WITH US</div>
+            <div class="footer-title">SELL WITH US 💼</div>
             <a href="#">Order a Bag</a>
             <a href="#">Reselling Guide</a>
             <a href="#">All About Earnings</a>
@@ -204,6 +210,68 @@
   <!-- Ensure Axios CDN is included before the main JS file -->
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="../public/js/index.js"></script>
+  <script>
+    // Hamburger menu toggle
+    const hamburger = document.getElementById('hamburgerMenu');
+    const navLinks = document.getElementById('navLinks');
+    hamburger.addEventListener('click', () => {
+      navLinks.classList.toggle('open');
+      hamburger.setAttribute('aria-expanded', navLinks.classList.contains('open'));
+    });
+    hamburger.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        navLinks.classList.toggle('open');
+        hamburger.setAttribute('aria-expanded', navLinks.classList.contains('open'));
+      }
+    });
+    // Optional: Close nav on link click (mobile)
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
+      });
+    });
+    // --- Cart Preview Dropdown ---
+    function setupCartPreviewEvents() {
+      const cartPreviewContainer = document.getElementById('cartPreviewContainer');
+      if (!cartPreviewContainer) return;
+      // Show/refresh preview on hover/focus/click
+      ['mouseenter','focusin','click'].forEach(evt => {
+        cartPreviewContainer.addEventListener(evt, () => {
+          if (window.renderCartPreview) window.renderCartPreview();
+        });
+      });
+      // Keyboard accessibility: close on Escape
+      cartPreviewContainer.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          cartPreviewContainer.classList.remove('open');
+        }
+      });
+    }
+    document.addEventListener('DOMContentLoaded', setupCartPreviewEvents);
+    // Page transition animation
+    document.addEventListener('DOMContentLoaded', function() {
+      var main = document.querySelector('main');
+      if (main) main.classList.add('page-transition');
+    });
+    // Button Ripple Effect
+    function addButtonRippleEffect() {
+      document.querySelectorAll('.cta-btn, .shop-btn, .btn-animate, .cart-preview-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          const rect = btn.getBoundingClientRect();
+          const ripple = document.createElement('span');
+          ripple.className = 'ripple';
+          const size = Math.max(rect.width, rect.height);
+          ripple.style.width = ripple.style.height = size + 'px';
+          ripple.style.left = (e.clientX - rect.left - size/2) + 'px';
+          ripple.style.top = (e.clientY - rect.top - size/2) + 'px';
+          btn.appendChild(ripple);
+          ripple.addEventListener('animationend', () => ripple.remove());
+        });
+      });
+    }
+    document.addEventListener('DOMContentLoaded', addButtonRippleEffect);
+  </script>
 </body>
 
 </html>

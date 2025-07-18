@@ -10,42 +10,41 @@
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
-  <header class="main-header">
-    <div class="header-left">
-      
-      <div class="logo baseline-logo">Reown</div>
-    </div>
+  <header>
     <nav class="navbar">
+      <div class="logo logo-bounce">Reown 🛒</div>
       <ul class="nav-links">
-        <li><a href="/views/index.html">Home</a></li>
-        <li><a href="/views/cart.html">Cart</a></li>
-        <li><a href="/views/dashboard.html">Dashboard</a></li>
-        <li><a href="/views/admin.html">Admin</a></li>
-        <li><a href="/views/contact.html">Contact Us</a></li>
-        <li><a href="/views/login.html" id="loginLink">Login</a></li>
-        <li><a href="/views/signup.html" id="signupLink">Sign Up</a></li>
-        <li><a href="#" id="logoutLink" class="logout-red" style="display:none;">Logout</a></li>
+        <li><a href="/views/index.html" class="wiggle-on-hover">🏠 Home</a></li>
+        <li><a href="/views/cart.html" class="wiggle-on-hover">🛒 Cart</a></li>
+        <li><a href="/views/dashboard.html" class="wiggle-on-hover">📋 Dashboard</a></li>
+        <li><a href="/views/admin.html" class="wiggle-on-hover">🛠️ Admin</a></li>
+        <li><a href="/views/contact.html" class="wiggle-on-hover">✉️ Contact</a></li>
+        <li><a href="/views/login.html" id="loginLink" class="wiggle-on-hover">🔒 Login</a></li>
+        <li><a href="/views/signup.html" id="signupLink" class="wiggle-on-hover">📝 Sign Up</a></li>
+        <li><a href="#" id="logoutLink" class="logout-red wiggle-on-hover" style="display:none;">🚪 Logout</a></li>
       </ul>
     </nav>
   </header>
 
-  <main>
-    <section class="cart-section">
-      <h1>Your Cart</h1>
-      <div id="cartItems" class="cart-items">
-        <!-- Cart items will be rendered here by JS -->
+  <main class="page-transition fade-in" style="display:flex;align-items:center;justify-content:center;min-height:80vh;background:linear-gradient(135deg,#e0f7fa 0%,#fff1fd 100%);">
+    <section class="cart-section" style="width:100%;max-width:520px;">
+      <div style="background:#fff;border-radius:18px;box-shadow:0 8px 32px rgba(60,72,100,0.13);padding:2.2em 2em 1.5em 2em;border:2px solid #e0f7fa;position:relative;">
+        <h1 style="text-align:center;margin-bottom:1.2em;letter-spacing:1px;">🛒 Your Cart</h1>
+        <div id="cartItems" class="cart-items" style="margin-bottom:1.5em;">
+          <!-- Cart items will be rendered here by JS -->
+        </div>
+        <div class="cart-summary" style="background:#f5f7fa;border-radius:12px;padding:1.2em 1em;margin-bottom:1.2em;box-shadow:0 2px 8px rgba(44,62,80,0.07);display:flex;align-items:center;justify-content:space-between;">
+          <div class="total-label" style="font-weight:600;font-size:1.1em;">Total:</div>
+          <div class="total-value" id="cartTotal" style="font-size:1.2em;color:#047e84;font-weight:700;">₹0</div>
+        </div>
+        <button class="cta-btn btn-animate" id="checkoutBtn" style="width:100%;font-size:1.15em;padding:0.9em 0;margin-top:0.5em;background:#4ecdc4;" onclick="window.location.href='/views/shipping.html'">Checkout 🚀</button>
       </div>
-      <div class="cart-summary">
-        <div class="total-label">Total:</div>
-        <div class="total-value" id="cartTotal">₹0</div>
-      </div>
-      <button class="cta-btn" id="checkoutBtn" onclick="window.location.href='/views/shipping.html'">Checkout</button>
     </section>
   </main>
 
   <!-- Separator Section -->
-  <div class="footer-sep">
-    <div class="footer-sep-title"><b>Discover one of the world's largest online consignment & thrift stores.</b></div>
+  <div class="footer-sep fade-in">
+    <div class="footer-sep-title"><b>🌎 Discover one of the world's largest online consignment & thrift stores.</b></div>
     <div class="footer-sep-desc">As one of the world's largest online resale platforms for women's and kids' apparel, shoes, and accessories, our mission is to inspire a new generation of shoppers to think secondhand clothes first. You can shop like-new and used women's clothes and kids' clothes at up to 90% off estimated retail at our online thrift store and consignment shop. From Gap to Gucci, we have all your favorite brands (including Lululemon, Anthropologie, Madewell & more!) for less. Plus, enjoy thousands of arrivals every day. Happy thrifting!</div>
   </div>
   <footer>
@@ -54,7 +53,7 @@
       <div class="footer-main-section">
         <div class="footer-columns">
           <div class="footer-col">
-            <div class="footer-title">THE COMPANY</div>
+            <div class="footer-title">THE COMPANY 🏢</div>
             <a href="#">About Us</a>
             <a href="#">Blog</a>
             <a href="#">Resale Report</a>
@@ -67,7 +66,7 @@
             <a href="#">Return Policy</a>
           </div>
           <div class="footer-col">
-            <div class="footer-title">DEPARTMENTS</div>
+            <div class="footer-title">DEPARTMENTS 🏬</div>
             <a href="#">Women</a>
             <a href="#">Kids</a>
             <a href="#">Juniors</a>
@@ -80,7 +79,7 @@
             <a href="#">Sale</a>
           </div>
           <div class="footer-col">
-            <div class="footer-title">TOP BRANDS</div>
+            <div class="footer-title">TOP BRANDS ⭐</div>
             <a href="#">J.Crew</a>
             <a href="#">Ann Taylor LOFT</a>
             <a href="#">Banana Republic</a>
@@ -93,14 +92,14 @@
             <a href="#">Shop All Brands</a>
           </div>
           <div class="footer-col">
-            <div class="footer-title">DISCOVER</div>
+            <div class="footer-title">DISCOVER 🔎</div>
             <a href="#">Rescues</a>
             <a href="#">Size Guide</a>
             <a href="#">EChOCloset Rewards</a>
             <a href="#">Gift Cards</a>
           </div>
           <div class="footer-col">
-            <div class="footer-title">SELL WITH US</div>
+            <div class="footer-title">SELL WITH US 💼</div>
             <a href="#">Order a Bag</a>
             <a href="#">Reselling Guide</a>
             <a href="#">All About Earnings</a>
@@ -122,5 +121,31 @@
   </footer>
 
   <script src="../public/js/cart.js"></script>
+  <script>
+    // Button Ripple Effect
+    function addButtonRippleEffect() {
+      document.querySelectorAll('.cta-btn, .shop-btn, .btn-animate, .cart-preview-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          const rect = btn.getBoundingClientRect();
+          const ripple = document.createElement('span');
+          ripple.className = 'ripple';
+          const size = Math.max(rect.width, rect.height);
+          ripple.style.width = ripple.style.height = size + 'px';
+          ripple.style.left = (e.clientX - rect.left - size/2) + 'px';
+          ripple.style.top = (e.clientY - rect.top - size/2) + 'px';
+          btn.appendChild(ripple);
+          ripple.addEventListener('animationend', () => ripple.remove());
+        });
+      });
+    }
+    document.addEventListener('DOMContentLoaded', addButtonRippleEffect);
+  </script>
+  <script>
+    // Page transition animation
+    document.addEventListener('DOMContentLoaded', function() {
+      var main = document.querySelector('main');
+      if (main) main.classList.add('page-transition');
+    });
+  </script>
 </body>
 </html> 

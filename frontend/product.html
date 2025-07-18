@@ -9,38 +9,38 @@
 <body>
   <header>
     <nav class="navbar">
-      <div class="logo">Reown</div>
+      <div class="logo logo-bounce">Reown 🛍️</div>
       <ul class="nav-links">
-        <li><a href="/views/index.html">Home</a></li>
-        <li><a href="/views/cart.html">Cart</a></li>
-        <li><a href="/views/dashboard.html">Dashboard</a></li>
-        <li><a href="/views/admin.html">Admin</a></li>
-        <li><a href="/views/contact.html">Contact Us</a></li>
-        <li><a href="/views/login.html" id="loginLink">Login</a></li>
-        <li><a href="/views/signup.html" id="signupLink">Sign Up</a></li>
-        <li><a href="#" id="logoutLink" class="logout-red" style="display:none;">Logout</a></li>
+        <li><a href="/views/index.html" class="wiggle-on-hover">🏠 Home</a></li>
+        <li><a href="/views/cart.html" class="wiggle-on-hover">🛒 Cart</a></li>
+        <li><a href="/views/dashboard.html" class="wiggle-on-hover">📋 Dashboard</a></li>
+        <li><a href="/views/admin.html" class="wiggle-on-hover">🛠️ Admin</a></li>
+        <li><a href="/views/contact.html" class="wiggle-on-hover">✉️ Contact</a></li>
+        <li><a href="/views/login.html" id="loginLink" class="wiggle-on-hover">🔒 Login</a></li>
+        <li><a href="/views/signup.html" id="signupLink" class="wiggle-on-hover">📝 Sign Up</a></li>
+        <li><a href="#" id="logoutLink" class="logout-red wiggle-on-hover" style="display:none;">🚪 Logout</a></li>
       </ul>
     </nav>
   </header>
-  <main>
+  <main class="fade-in">
     <div class="product-details">
       <div class="product-img-col">
         <img id="productImg" class="product-img" src="" alt="Product Image">
       </div>
       <div class="product-info-col">
-        <h1 id="productName">Product Name</h1>
+        <h1 id="productName">🛍️ Product Name</h1>
         <div class="product-pricing">
           <span class="original-price" id="productOriginalPrice"></span>
           <span class="price" id="productPrice">₹0</span>
         </div>
         <div class="product-detail-desc" id="productDesc">Product description...</div>
         <div id="productShipping"></div>
-        <button class="buy-btn" id="buyNowBtn">Buy Now</button>
-        <button class="buy-btn" id="addToCartBtn">Add to Cart</button>
+        <button class="buy-btn btn-animate" id="buyNowBtn">Buy Now 🛒</button>
+        <button class="buy-btn btn-animate" id="addToCartBtn">Add to Cart ➕</button>
       </div>
     </div>
     <section class="product-reviews">
-      <h3>Product Reviews</h3>
+      <h3>Product Reviews ⭐</h3>
       <form id="reviewForm">
         <label>Rating:
           <select id="reviewRating">
@@ -57,7 +57,7 @@
           <textarea id="reviewComment"></textarea>
         </label>
         <br>
-        <button type="submit">Submit Review</button>
+        <button type="submit" class="btn-animate">Submit Review 📝</button>
       </form>
       <div id="reviewsList"></div>
     </section>

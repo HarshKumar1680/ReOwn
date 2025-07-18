@@ -110,9 +110,11 @@ function renderCart(cart, total) {
 
   if (!validItems.length) {
     cartItemsDiv.innerHTML = `
-      <div class="empty-cart">
-        <p>Your cart is empty.</p>
-        <button class="continue-shopping-btn" onclick="window.location.href='/views/index.html'">Continue Shopping</button>
+      <div class="empty-cart" style="text-align:center;padding:2em 0;">
+        <div style="font-size:3.5em;">🛒</div>
+        <div style="font-size:1.3em;font-weight:600;margin:0.5em 0 0.2em 0;">Your cart is empty!</div>
+        <div style="color:#888;margin-bottom:1em;">Start shopping and fill it with great finds.</div>
+        <button class="continue-shopping-btn btn-animate" onclick="window.location.href='/views/index.html'">Continue Shopping</button>
       </div>
     `;
     cartTotalDiv.textContent = '';
@@ -180,8 +182,51 @@ function addCartListeners() {
   });
 }
 
+// --- Cart Preview Dropdown Logic ---
+async function renderCartPreview() {
+  const container = document.getElementById('cartPreviewContainer');
+  const list = document.getElementById('cartPreviewList');
+  const totalDiv = document.getElementById('cartPreviewTotal');
+  const emptyDiv = document.getElementById('cartPreviewEmpty');
+  if (!container || !list || !totalDiv || !emptyDiv) return;
+  try {
+    const authenticated = await isAuthenticated();
+    if (!authenticated) {
+      list.innerHTML = '';
+      totalDiv.textContent = '';
+      emptyDiv.style.display = 'block';
+      return;
+    }
+    const response = await apiCall('/cart');
+    if (response.success && response.data && response.data.items.length) {
+      list.innerHTML = '';
+      let grandTotal = 0;
+      response.data.items.forEach(item => {
+        if (!item.product) return;
+        const li = document.createElement('li');
+        li.innerHTML = `<span>${item.product.name} <span style='color:#888;font-size:0.95em;'>(x${item.quantity})</span></span><span>₹${item.product.price * item.quantity}</span>`;
+        list.appendChild(li);
+        grandTotal += item.product.price * item.quantity;
+      });
+      totalDiv.textContent = `Total: ₹${grandTotal}`;
+      emptyDiv.style.display = 'none';
+    } else {
+      list.innerHTML = '';
+      totalDiv.textContent = '';
+      emptyDiv.style.display = 'block';
+    }
+  } catch (err) {
+    list.innerHTML = '';
+    totalDiv.textContent = '';
+    emptyDiv.style.display = 'block';
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   updateNavbar(); // Update navbar on load
   setupLogout(); // Setup logout functionality
   loadCart();
-}); 
+  renderCartPreview();
+});
+// Export for other scripts if needed
+window.renderCartPreview = renderCartPreview; 

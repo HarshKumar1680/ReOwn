@@ -11,44 +11,46 @@
   <header>
    
     <nav class="navbar">
-      <div class="logo">Reown</div>
+      <div class="logo logo-bounce">Reown 🔒</div>
             <ul class="nav-links">
-        <li><a href="/views/index.html">Home</a></li>
-        <li><a href="/views/cart.html">Cart</a></li>
-        <li><a href="/views/dashboard.html">Dashboard</a></li>
-        <li><a href="/views/admin.html">Admin</a></li>
-        <li><a href="/views/contact.html">Contact Us</a></li>
-        <li><a href="/views/login.html">Login</a></li>
-        <li><a href="/views/signup.html">Sign Up</a></li>
+        <li><a href="/views/index.html" class="wiggle-on-hover">🏠 Home</a></li>
+        <li><a href="/views/cart.html" class="wiggle-on-hover">🛒 Cart</a></li>
+        <li><a href="/views/dashboard.html" class="wiggle-on-hover">📋 Dashboard</a></li>
+        <li><a href="/views/admin.html" class="wiggle-on-hover">🛠️ Admin</a></li>
+        <li><a href="/views/contact.html" class="wiggle-on-hover">✉️ Contact</a></li>
+        <li><a href="/views/login.html" class="wiggle-on-hover">🔒 Login</a></li>
+        <li><a href="/views/signup.html" class="wiggle-on-hover">📝 Sign Up</a></li>
       </ul>
     </nav>
   </header>
-  <div class="split-layout">
+  <div class="split-layout fade-in">
     <div class="split-image">
       <img src="../public/images/login.png" alt="Shopping" class="split-image-content" />
     </div>
     <div class="split-form">
       <div class="form-card">
-        <div class="form-headline">Infinite deals unlocked.</div>
+        <div class="form-headline">🔓 Infinite deals unlocked.</div>
         <div class="form-subtext">Yippee, welcome to <b>ReOwn!</b> Add a password and <b>start shopping.</b></div>
         <form id="loginForm" class="auth-form">
-          <input type="email" id="email" name="email" placeholder="Email*" required>
-          <div style="position:relative;">
+          <div class="auth-input-col">
+            <input type="email" id="email" name="email" placeholder="Email*" required>
+          </div>
+          <div class="auth-input-col input-icon">
             <input type="password" id="password" name="password" placeholder="Password*" required class="password-input">
             <span id="togglePassword" class="toggle-password-icon">
               <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
             </span>
           </div>
-          <button type="submit" class="cta-btn">Login</button>
+          <button type="submit" class="cta-btn btn-animate">Login 🔑</button>
         </form>
-        <button id="logoutBtn" class="cta-btn" style="display:none; margin-top:1rem;">Logout</button>
+        <button id="logoutBtn" class="cta-btn btn-animate" style="display:none; margin-top:1rem;">Logout 🚪</button>
         <div class="form-footer">
           Need an account? <a href="/views/signup.html"><b>Sign up</b></a>
         </div>
         <div class="or-divider">OR</div>
-        <button class="social-login-btn google" id="googleLoginBtn" type="button"><span>G</span> Google</button>
-        <button class="social-login-btn amazon"><span>A</span> Amazon</button>
-        <button class="social-login-btn facebook"><span>f</span> Facebook</button>
+        <button class="social-login-btn google btn-animate" id="googleLoginBtn" type="button"><span>G</span> Google</button>
+        <button class="social-login-btn amazon btn-animate"><span>A</span> Amazon</button>
+        <button class="social-login-btn facebook btn-animate"><span>f</span> Facebook</button>
        
         <div class="form-policy">By registering, you accept the Terms of Service and Privacy Policy</div>
       </div>

@@ -9,6 +9,7 @@ const {
   updateOrderStatus,
   cancelOrder
 } = require('../controllers/orderController');
+const paymentController = require('../controllers/paymentController');
 
 // User places an order
 router.post('/', protect, authorize('user', 'admin'), createOrder);
@@ -22,5 +23,11 @@ router.get('/:id', protect, authorize('user', 'admin'), getOrderById);
 router.put('/:id/status', protect, authorize('admin'), updateOrderStatus);
 // User cancels their order
 router.put('/:id/cancel', protect, authorize('user', 'admin'), cancelOrder);
+// Get payment QR code for an order
+router.get('/:orderId/payment-qr', protect, authorize('user', 'admin'), paymentController.getPaymentQRCode);
+// Submit payment proof (transaction ID) for an order
+router.post('/:orderId/payment-proof', protect, authorize('user', 'admin'), paymentController.submitPaymentProof);
+// Admin: verify payment (mark as paid or failed)
+router.post('/:id/verify-payment', protect, authorize('admin'), require('../controllers/orderController').verifyPayment);
 
 module.exports = router; 

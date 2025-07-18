@@ -99,5 +99,23 @@ async function initSession() {
   setupLogout();
 }
 
+// Redirect logged-in users away from login/signup pages
+async function redirectIfLoggedIn() {
+  const path = window.location.pathname;
+  if (path.endsWith('/login.html') || path.endsWith('/signup.html')) {
+    try {
+      const response = await fetch(`${API_BASE_URL}/auth/session`, { credentials: 'include' });
+      const data = await response.json();
+      if (data.loggedIn) {
+        window.location.href = '/views/index.html';
+      }
+    } catch {}
+  }
+}
+
 // Auto-initialize when DOM is loaded
-document.addEventListener('DOMContentLoaded', initSession); 
+// (add redirect check for login/signup pages)
+document.addEventListener('DOMContentLoaded', async () => {
+  await redirectIfLoggedIn();
+  await initSession();
+}); 

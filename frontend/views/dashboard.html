@@ -11,53 +11,57 @@
   <header>
     
     <nav class="navbar">
-      <div class="logo">Reown</div>
+      <div class="logo logo-bounce">Reown 📋</div>
             <ul class="nav-links">
-        <li><a href="/views/index.html">Home</a></li>
-        <li><a href="/views/cart.html">Cart</a></li>
-        <li><a href="/views/dashboard.html">Dashboard</a></li>
-        <li><a href="/views/admin.html">Admin</a></li>
-        <li><a href="/views/contact.html">Contact Us</a></li>
-        <li><a href="/views/login.html" id="loginLink">Login</a></li>
-        <li><a href="/views/signup.html" id="signupLink">Sign Up</a></li>
-        <li><a href="#" id="logoutLink" class="logout-red" style="display:none;">Logout</a></li>
+        <li><a href="/views/index.html" class="wiggle-on-hover">🏠 Home</a></li>
+        <li><a href="/views/cart.html" class="wiggle-on-hover">🛒 Cart</a></li>
+        <li><a href="/views/dashboard.html" class="wiggle-on-hover">📋 Dashboard</a></li>
+        <li><a href="/views/admin.html" class="wiggle-on-hover">🛠️ Admin</a></li>
+        <li><a href="/views/contact.html" class="wiggle-on-hover">✉️ Contact</a></li>
+        <li><a href="/views/login.html" id="loginLink" class="wiggle-on-hover">🔒 Login</a></li>
+        <li><a href="/views/signup.html" id="signupLink" class="wiggle-on-hover">📝 Sign Up</a></li>
+        <li><a href="#" id="logoutLink" class="logout-red wiggle-on-hover" style="display:none;">🚪 Logout</a></li>
       </ul>
     </nav>
   </header>
 
-  <main>
-    
-    <section class="dashboard-section">
-      <aside class="dashboard-nav">
-        <button class="dashboard-tab active" data-tab="listings">My Listings</button>
-        <button class="dashboard-tab" data-tab="orders">My Orders</button>
-        <button class="dashboard-tab" data-tab="profile">Profile</button>
+  <main class="page-transition fade-in" style="display:flex;align-items:flex-start;justify-content:center;min-height:80vh;background:linear-gradient(135deg,#e0f7fa 0%,#fff1fd 100%);">
+    <section class="dashboard-section" style="width:100%;max-width:1100px;display:flex;gap:2.5em;">
+      <aside class="dashboard-nav" style="background:#f5f7fa;border-radius:16px;box-shadow:0 4px 18px rgba(44,62,80,0.10);padding:2em 1.2em;display:flex;flex-direction:column;gap:1.2em;min-width:180px;">
+        <button class="dashboard-tab btn-animate active" data-tab="listings" style="font-size:1.1em;">🗂️ My Listings</button>
+        <button class="dashboard-tab btn-animate" data-tab="orders" style="font-size:1.1em;">📦 My Orders</button>
+        <button class="dashboard-tab btn-animate" data-tab="profile" style="font-size:1.1em;">👤 Profile</button>
       </aside>
-      <div class="dashboard-content">
-        <div id="dashboardWelcome" class="dashboard-welcome">
-          <h1>Welcome, <span id="userName">User</span>!</h1>
-          <p>Manage your listings, orders, and profile here.</p>
+      <div class="dashboard-content" style="flex:1;display:flex;flex-direction:column;gap:2em;">
+        <div id="dashboardWelcome" class="dashboard-welcome" style="background:#fff;border-radius:16px;box-shadow:0 4px 18px rgba(44,62,80,0.10);padding:2em 2em 1.2em 2em;margin-bottom:1em;text-align:center;">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:0.5em;">
+            <div style="width:64px;height:64px;border-radius:50%;background:#e0f7fa;display:flex;align-items:center;justify-content:center;font-size:2.2em;box-shadow:0 2px 8px rgba(44,62,80,0.07);margin-bottom:0.2em;">👋</div>
+            <h1 style="font-size:2em;font-weight:700;margin:0;">Welcome, <span id="userName">User</span>!</h1>
+            <p style="color:#047e84;font-size:1.1em;">Manage your listings, orders, and profile here.</p>
+          </div>
         </div>
-        <div id="dashboardListings" class="dashboard-panel">
-          <h2>My Listings</h2>
-          <div class="dashboard-table">
+        <div id="dashboardListings" class="dashboard-panel" style="background:#fff;border-radius:16px;box-shadow:0 4px 18px rgba(44,62,80,0.10);padding:2em 1.5em 1.2em 1.5em;">
+          <h2 style="font-size:1.3em;">🗂️ My Listings</h2>
+          <div class="dashboard-table" style="margin-top:1em;border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(44,62,80,0.07);">
             <!-- Listings will be rendered here by JS -->
           </div>
         </div>
-        <div id="dashboardOrders" class="dashboard-panel" style="display:none;">
-          <h2>My Orders</h2>
-          <div class="dashboard-table">
+        <div id="dashboardOrders" class="dashboard-panel" style="background:#fff;border-radius:16px;box-shadow:0 4px 18px rgba(44,62,80,0.10);padding:2em 1.5em 1.2em 1.5em;display:none;">
+          <h2 style="font-size:1.3em;">📦 My Orders</h2>
+          <div class="dashboard-table" style="margin-top:1em;border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(44,62,80,0.07);">
             <!-- Orders will be rendered here by JS -->
           </div>
         </div>
-        <div id="dashboardProfile" class="dashboard-panel" style="display:none;">
-          <h2>Profile</h2>
-          <form id="profileForm" class="profile-form">
-            <label for="profileName">Name</label>
-            <input type="text" id="profileName" value="User" required>
-            <label for="profileEmail">Email</label>
+        <div id="dashboardProfile" class="dashboard-panel" style="background:#fff;border-radius:16px;box-shadow:0 4px 18px rgba(44,62,80,0.10);padding:2em 1.5em 1.2em 1.5em;display:none;">
+          <h2 style="font-size:1.3em;">👤 Profile</h2>
+          <form id="profileForm" class="profile-form" style="margin-top:1.2em;display:flex;flex-direction:column;gap:1.1em;max-width:400px;">
+            <div style="display:flex;align-items:center;gap:1em;">
+              <div style="width:48px;height:48px;border-radius:50%;background:#e0f7fa;display:flex;align-items:center;justify-content:center;font-size:1.5em;">👤</div>
+              <input type="text" id="profileName" value="User" required style="flex:1;">
+            </div>
+            <label for="profileEmail" style="font-weight:500;color:#047e84;">Email</label>
             <input type="email" id="profileEmail" value="user@example.com" required>
-            <button type="submit" class="cta-btn">Update Profile</button>
+            <button type="submit" class="cta-btn" style="margin-top:1em;">Update Profile</button>
           </form>
         </div>
       </div>
@@ -65,8 +69,8 @@
   </main>
 
   <!-- Separator Section -->
-  <div class="footer-sep">
-    <div class="footer-sep-title"><b>Discover one of the world's largest online consignment & thrift stores.</b></div>
+  <div class="footer-sep fade-in">
+    <div class="footer-sep-title"><b>🌎 Discover one of the world's largest online consignment & thrift stores.</b></div>
     <div class="footer-sep-desc">As one of the world's largest online resale platforms for women's and kids' apparel, shoes, and accessories, our mission is to inspire a new generation of shoppers to think secondhand clothes first. You can shop like-new and used women's clothes and kids' clothes at up to 90% off estimated retail at our online thrift store and consignment shop. From Gap to Gucci, we have all your favorite brands (including Lululemon, Anthropologie, Madewell & more!) for less. Plus, enjoy thousands of arrivals every day. Happy thrifting!</div>
   </div>
   <footer>
@@ -143,5 +147,29 @@
   </footer>
 
   <script src="../public/js/dashboard.js"></script>
+  <script>
+    // Page transition animation
+    document.addEventListener('DOMContentLoaded', function() {
+      var main = document.querySelector('main');
+      if (main) main.classList.add('page-transition');
+    });
+    // Button Ripple Effect
+    function addButtonRippleEffect() {
+      document.querySelectorAll('.cta-btn, .shop-btn, .btn-animate, .cart-preview-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          const rect = btn.getBoundingClientRect();
+          const ripple = document.createElement('span');
+          ripple.className = 'ripple';
+          const size = Math.max(rect.width, rect.height);
+          ripple.style.width = ripple.style.height = size + 'px';
+          ripple.style.left = (e.clientX - rect.left - size/2) + 'px';
+          ripple.style.top = (e.clientY - rect.top - size/2) + 'px';
+          btn.appendChild(ripple);
+          ripple.addEventListener('animationend', () => ripple.remove());
+        });
+      });
+    }
+    document.addEventListener('DOMContentLoaded', addButtonRippleEffect);
+  </script>
 </body>
 </html> 

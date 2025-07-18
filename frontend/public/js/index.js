@@ -182,6 +182,13 @@ function updateProductCards(products) {
   //     console.warn(`No backend product found for card: ${card.name}`);
   //   }
   // });
+  if (!cards.length) {
+    const container = document.getElementById('productCardsContainer');
+    if (container) {
+      container.innerHTML = '<div style="text-align:center;padding:2em 0;"><div style="font-size:3em;">🕵️‍♂️</div><div style="font-size:1.2em;font-weight:600;margin:0.5em 0 0.2em 0;">No products found!</div><div style="color:#888;">Try adjusting your filters or check back later.</div></div>';
+    }
+    return;
+  }
   renderFixedCards(cards, 'product', 'productCardsContainer', 'product-card');
   renderFixedCards(cards, 'category', 'categoryCardsContainer', 'category-card');
   renderFixedCards(cards, 'extra', 'extraProductCardsContainer', 'extra-product-card');

@@ -60,7 +60,7 @@ async function renderCheckoutSummary() {
   try {
     const cartRes = await apiCall('/cart');
     if (!cartRes.success || !cartRes.data.items.length) {
-      summaryDiv.innerHTML = '<div style="color:red;">Your cart is empty. <a href="/views/cart.html">Go to cart</a></div>';
+      summaryDiv.innerHTML = '<div style="text-align:center;padding:2em 0;"><div style="font-size:3em;">🛒</div><div style="font-size:1.2em;font-weight:600;margin:0.5em 0 0.2em 0;">Your cart is empty!</div><div style="color:#888;">Please add items to your cart before checking out.</div><a href="/views/cart.html" class="cta-btn btn-animate" style="margin-top:1em;display:inline-block;">Go to Cart</a></div>';
       document.getElementById('checkoutForm').style.display = 'none';
       return;
     }
@@ -110,43 +110,32 @@ function getShippingAddress() {
 const checkoutForm = document.getElementById('checkoutForm');
 checkoutForm.onsubmit = async function(e) {
   e.preventDefault();
-  alert('Submitting order...'); // DEBUG
   const placeOrderBtn = checkoutForm.querySelector('button[type="submit"]');
   placeOrderBtn.disabled = true;
-  placeOrderBtn.textContent = 'Placing Order...';
+  placeOrderBtn.textContent = 'Proceeding to Payment...';
   try {
     const cartRes = await apiCall('/cart');
-    console.log('Cart response:', cartRes); // DEBUG
     if (!cartRes.success || !cartRes.data.items.length) throw new Error('Cart is empty.');
     const validItems = cartRes.data.items.filter(item => item.product && item.product._id);
     if (!validItems.length) throw new Error('Your cart contains invalid items. Please remove them and try again.');
     const items = validItems.map(item => ({
       product: item.product._id,
       quantity: item.quantity,
-      price: item.product.price
+      price: item.product.price,
+      name: item.product.name
     }));
     const shippingAddress = getShippingAddress();
-    console.log('Shipping address:', shippingAddress); // DEBUG
     if (!shippingAddress) {
       alert('Please enter your shipping address.');
       window.location.href = '/views/shipping.html';
       return;
     }
-    console.log('Placing order with:', { items, shippingAddress }); // DEBUG
-    const orderRes = await apiCall('/orders', {
-      method: 'POST',
-      body: JSON.stringify({ items, shippingAddress })
-    });
-    console.log('Order response:', orderRes); // DEBUG
-    if (!orderRes.success) {
-      showOrderModal(orderRes.message || 'Order failed.');
-      return;
-    }
-    showOrderModal('Order placed successfully!');
-    // window.location.href = '/views/orders.html';
+    // Save to localStorage for payment page
+    localStorage.setItem('pendingOrder', JSON.stringify({ items, shippingAddress }));
+    window.location.href = '/views/payment.html';
+    return;
   } catch (err) {
-    // alert('Order error: ' + (err.message || 'Error placing order.')); // DEBUG
-    showOrderModal(err.message || 'Error placing order.');
+    showOrderModal(err.message || 'Error preparing payment.');
   } finally {
     placeOrderBtn.disabled = false;
     placeOrderBtn.textContent = 'Place Order';

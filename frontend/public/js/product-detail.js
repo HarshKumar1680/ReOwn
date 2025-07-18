@@ -51,13 +51,12 @@ function renderProduct(product) {
   document.getElementById('productName').textContent = product.name;
   document.getElementById('productPrice').textContent = `₹${product.price}`;
   document.getElementById('productDesc').textContent = product.description;
-  document.getElementById('productDetails').innerHTML = `
-    <div><b>Brand:</b> ${product.brand || 'N/A'}</div>
-    <div><b>Size:</b> ${product.size}</div>
-    <div><b>Condition:</b> ${product.condition}</div>
-    <div><b>Stock:</b> ${product.stock}</div>
-    <div><b>Category:</b> ${product.category}</div>
-  `;
+  // Fill meta list fields
+  document.getElementById('productCategory').textContent = product.category || 'N/A';
+  document.getElementById('productBrand').textContent = product.brand || 'N/A';
+  document.getElementById('productSize').textContent = product.size || 'N/A';
+  document.getElementById('productCondition').textContent = product.condition || 'N/A';
+  document.getElementById('productStock').textContent = product.stock != null ? product.stock : 'N/A';
 }
 
 async function handleAddToCart() {

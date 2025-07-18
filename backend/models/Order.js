@@ -25,6 +25,15 @@ const orderSchema = new mongoose.Schema({
     enum: ['processing', 'shipped', 'delivered', 'cancelled'],
     default: 'processing'
   },
+  paymentStatus: {
+    type: String,
+    enum: ['pending', 'awaiting_verification', 'paid', 'failed'],
+    default: 'pending'
+  },
+  paymentProof: {
+    txnId: { type: String },
+    submittedAt: { type: Date }
+  },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
 });

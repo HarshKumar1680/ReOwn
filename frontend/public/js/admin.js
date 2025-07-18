@@ -1,3 +1,19 @@
+// Protect admin page: only allow logged-in admins
+(async function protectAdminPage() {
+  try {
+    const res = await fetch('http://localhost:5000/api/auth/session', { credentials: 'include' });
+    const data = await res.json();
+    if (!data.loggedIn) {
+      window.location.href = '/views/login.html';
+    } else if (!data.user || data.user.role !== 'admin') {
+      alert('Admins only!');
+      window.location.href = '/views/index.html';
+    }
+  } catch {
+    window.location.href = '/views/login.html';
+  }
+})();
+
 const API_BASE_URL = "http://localhost:5000/api";
 
 // Utility: fetch with credentials
@@ -83,7 +99,7 @@ function renderAdminOrders(orders) {
     tr.innerHTML = `
       <td style="padding:12px;">${new Date(order.createdAt).toLocaleString()}</td>
       <td>${order.user ? order.user.name : 'N/A'}</td>
-      <td>${order.status}</td>
+      <td><span class="status-badge status-${order.status}">${order.status.charAt(0).toUpperCase() + order.status.slice(1)}</span><br><span style="font-size:0.9em;color:#555;">Payment: ${order.paymentStatus || 'N/A'}</span></td>
       <td>₹${order.totalPrice}</td>
       <td><button class="cta-btn" data-id="${order._id}">Details</button></td>
       <td>
@@ -93,9 +109,18 @@ function renderAdminOrders(orders) {
           <option value="delivered"${order.status==='delivered'?' selected':''}>Delivered</option>
           <option value="cancelled"${order.status==='cancelled'?' selected':''}>Cancelled</option>
         </select>
+        <div class="payment-actions" data-order-id="${order._id}"></div>
       </td>
     `;
     adminOrdersTableBody.appendChild(tr);
+    // Add payment verification actions if needed
+    if (order.paymentStatus === 'awaiting_verification') {
+      const actionsDiv = tr.querySelector('.payment-actions');
+      actionsDiv.innerHTML = `
+        <button class="verify-payment-btn" data-action="paid" data-order-id="${order._id}" style="background:#4ecdc4;color:white;margin:2px 0;">Mark Paid</button>
+        <button class="verify-payment-btn" data-action="failed" data-order-id="${order._id}" style="background:#ff6b6b;color:white;margin:2px 0;">Mark Failed</button>
+      `;
+    }
   });
   // Details button
   adminOrdersTableBody.querySelectorAll('button[data-id]').forEach(btn => {
@@ -107,7 +132,7 @@ function renderAdminOrders(orders) {
       const orderId = sel.getAttribute('data-id');
       const status = sel.value;
       try {
-        const res = await fetch(`http://localhost:5000/api/orders/${orderId}/status`, {
+        const res = await fetch(`/api/orders/${orderId}/status`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
@@ -122,11 +147,36 @@ function renderAdminOrders(orders) {
       }
     };
   });
+  // Payment verification actions
+  adminOrdersTableBody.querySelectorAll('.verify-payment-btn').forEach(btn => {
+    btn.onclick = async function() {
+      const orderId = btn.getAttribute('data-order-id');
+      const action = btn.getAttribute('data-action');
+      btn.disabled = true;
+      btn.textContent = 'Processing...';
+      try {
+        const res = await fetch(`/api/orders/${orderId}/verify-payment`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ action })
+        });
+        const data = await res.json();
+        if (!data.success) throw new Error(data.message || 'Failed to verify payment');
+        alert('Payment status updated!');
+        fetchAndRenderAdminOrders();
+      } catch (err) {
+        alert(err.message || 'Error verifying payment.');
+        btn.disabled = false;
+        btn.textContent = action === 'paid' ? 'Mark Paid' : 'Mark Failed';
+      }
+    };
+  });
 }
 
 async function showAdminOrderDetails(orderId) {
   try {
-    const res = await fetch(`http://localhost:5000/api/orders/${orderId}`, { credentials: 'include' });
+    const res = await fetch(`/api/orders/${orderId}`, { credentials: 'include' });
     const data = await res.json();
     if (!data.success) throw new Error(data.message || 'Failed to fetch order details');
     const order = data.data;
@@ -134,13 +184,15 @@ async function showAdminOrderDetails(orderId) {
       <h3>Order Details</h3>
       <div><b>Date:</b> ${new Date(order.createdAt).toLocaleString()}</div>
       <div><b>Status:</b> ${order.status}</div>
+      <div><b>Payment Status:</b> ${order.paymentStatus || 'N/A'}</div>
       <div><b>User:</b> ${order.user ? order.user.name + ' (' + order.user.email + ')' : 'N/A'}</div>
       <div><b>Total:</b> ₹${order.totalPrice}</div>
       <div><b>Shipping:</b> ${order.shippingAddress.fullName}, ${order.shippingAddress.address}, ${order.shippingAddress.city}, ${order.shippingAddress.postalCode}, ${order.shippingAddress.country}${order.shippingAddress.phone ? ', ' + order.shippingAddress.phone : ''}</div>
       <div style="margin-top:1em;"><b>Items:</b></div>
       <ul style="margin:0 0 1em 1em;padding:0;">
-        ${order.items.map(item => `<li>${item.quantity} x ${item.product} @ ₹${item.price}</li>`).join('')}
+        ${order.items.map(item => `<li>${item.quantity} x ${item.product && item.product.name ? item.product.name : item.product} @ ₹${item.price}</li>`).join('')}
       </ul>
+      ${order.paymentProof && order.paymentProof.txnId ? `<div><b>Txn ID:</b> ${order.paymentProof.txnId}</div>` : ''}
     `;
     orderDetailsModal.style.display = 'block';
   } catch (err) {
@@ -174,7 +226,10 @@ const editUserForm = document.getElementById('editUserForm');
 let editingUserId = null;
 
 // Modal open/close helpers
-function openModal(modal) { modal.style.display = 'block'; }
+function openModal(modal) {
+  modal.style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 function closeModal(modal) { modal.style.display = 'none'; }
 window.onclick = function(event) {
   [addProductModal, editProductModal, deleteProductModal, editUserModal].forEach(modal => {

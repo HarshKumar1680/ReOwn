@@ -40,7 +40,7 @@ const app = express();
 
 // CORS: allow frontend to send credentials (cookies)
 app.use(cors({
-  origin: 'http://localhost:5500',
+  origin: process.env.FRONTEND_URL || 'http://localhost:5500',
   credentials: true
 }));
 
@@ -49,7 +49,7 @@ app.use(express.urlencoded({ extended: false }));
 
 // Session: allow cross-origin cookies for local dev
 app.use(session({
-  secret: 'reown-session-secret', // use env var in production
+  secret: process.env.SESSION_SECRET || 'reown-session-secret', // use env var in production
   resave: false,
   saveUninitialized: false,
   cookie: {
