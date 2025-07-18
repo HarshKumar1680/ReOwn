@@ -1,6 +1,22 @@
+require('dotenv').config({ path: require('path').resolve(__dirname, '../.env') });
+
 const mongoose = require('mongoose');
 const Product = require('../models/Product');
-require('dotenv').config();
+
+const uri = process.env.MONGODB_URI;
+if (!uri) {
+  console.error('Error: MONGODB_URI is not defined in the environment variables. Please check your .env file.');
+  process.exit(1);
+}
+
+mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    console.log('Connected to MongoDB');
+  })
+  .catch((err) => {
+    console.error('Error connecting to MongoDB:', err);
+    process.exit(1);
+  });
 
 const products = [
   // --- Main Products ---

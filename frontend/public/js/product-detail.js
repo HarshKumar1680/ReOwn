@@ -37,11 +37,23 @@ async function loadProduct() {
     if (response.success) {
       renderProduct(response.data);
     } else {
-      alert('Product not found');
-      window.location.href = '/views/index.html';
+      // Show user-friendly message instead of alert+redirect
+      document.querySelector('.product-details').innerHTML = `
+        <div style='text-align:center;padding:2em 0;'>
+          <div style='font-size:3em;'>🕵️‍♂️</div>
+          <div style='font-size:1.2em;font-weight:600;margin:0.5em 0 0.2em 0;'>Product not found!</div>
+          <div style='color:#888;'>Please try another item or <a href="/views/index.html">return to homepage</a>.</div>
+        </div>
+      `;
     }
   } catch (error) {
-    alert('Error loading product. Please try again.');
+    document.querySelector('.product-details').innerHTML = `
+      <div style='text-align:center;padding:2em 0;'>
+        <div style='font-size:3em;'>❌</div>
+        <div style='font-size:1.2em;font-weight:600;margin:0.5em 0 0.2em 0;'>Error loading product.</div>
+        <div style='color:#888;'>Please try again later or <a href=\"/views/index.html\">return to homepage</a>.</div>
+      </div>
+    `;
   }
 }
 
@@ -49,6 +61,25 @@ function renderProduct(product) {
   document.getElementById('productImg').src = product.image;
   document.getElementById('productImg').alt = product.name;
   document.getElementById('productName').textContent = product.name;
+  // Show original price with del if it's higher than price
+  const origPriceEl = document.getElementById('productOriginalPrice');
+  const priceEl = document.getElementById('productPrice');
+  // Remove any previous discount badge
+  const prevBadge = document.getElementById('discountBadge');
+  if (prevBadge) prevBadge.remove();
+  if (product.originalPrice && product.originalPrice > product.price) {
+    origPriceEl.style.display = 'inline-block';
+    origPriceEl.innerHTML = `<del>₹${product.originalPrice}</del>`;
+    // Calculate percent off
+    const percent = Math.round(100 * (product.originalPrice - product.price) / product.originalPrice);
+    const badge = document.createElement('span');
+    badge.className = 'discount-badge';
+    badge.id = 'discountBadge';
+    badge.textContent = `-${percent}% OFF`;
+    priceEl.after(badge);
+  } else {
+    origPriceEl.style.display = 'none';
+  }
   document.getElementById('productPrice').textContent = `₹${product.price}`;
   document.getElementById('productDesc').textContent = product.description;
   // Fill meta list fields
